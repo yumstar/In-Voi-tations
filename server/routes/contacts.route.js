@@ -54,7 +54,7 @@ contactRouter.route('/contacts/:id').get((req, res) => {
         contact.phone = req.body.phone;
         contact.email = req.body.email;
         contact.save()
-          .then(() => res.json(`Contact with id id ${req.params.id} updated`))
+          .then(() => res.json(`Contact with id ${req.params.id} updated`))
           .catch(err => res.status(400).json('Error: ' + err));
       })
       .catch(err => res.status(400).json('Error: ' + err));
