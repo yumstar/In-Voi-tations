@@ -1,3 +1,5 @@
 import mongoose from "mongoose";
-import eventInfoSchema from "../schema/contact.schema"
-export const EventInfo = mongoose.model('Contact', eventInfoSchema)
+import eventInfoSchema from "../schema/eventInfo.schema.js"
+const EventInfo = mongoose.model('Event Info', eventInfoSchema)
+
+export default EventInfo

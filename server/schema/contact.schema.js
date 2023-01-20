@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
 
-export const contactSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
+const contactSchema = new mongoose.Schema({
+    firstName: {type: String, required: true},
+    lastName: {type: String, required: true},
     birthday: Date,
-    phone: String,
-    email: String
+    phone: {type: String, required: true, minLength: 7, trim: true},
+    email: {type: String, required: true, minLength: 3, trim: true}
 })
+
+
+export default contactSchema
