@@ -28,4 +28,29 @@ eventInfoRouter.route("/addEventInfo").post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+eventInfoRouter.route('/eventInfos/:id').get((req, res) => {
+    EventInfo.findById(req.params.id)
+      .then(eventInfo => res.json(eventInfo))
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
+  eventInfoRouter.route('/eventInfos/:id').delete((req, res) => {
+    EventInfo.findByIdAndDelete(req.params.id)
+      .then(() => res.json(`Event info with id ${req.params.id} deleted`))
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
+  eventInfoRouter.route('/eventInfos/update/:id').post((req, res) => {
+    EventInfo.findById(req.params.id)
+      .then(eventInfo => {
+        eventInfo.name = req.body.name;
+        eventInfo.date = Date.parse(req.body.date);
+        eventInfo.time = Date.parse(req.body.time);
+        eventInfo.save()
+          .then(() => res.json(`Contact with id ${req.params.id} updated`))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
   export default eventInfoRouter
