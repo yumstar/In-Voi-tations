@@ -8,9 +8,7 @@ import Contact from "./Contact"
 export default function ContactList() {
     // use
     // const Contacts = 
-    const [contacts, setContacts] = useState({
-        contactsList: []
-    });
+    const [contacts, setContacts] = useState([]);
 
     const getAllContacts = () => {
         axios({
@@ -18,24 +16,35 @@ export default function ContactList() {
             url: "http://localhost:5000/contact/"
         })
         .then((res) => {
-            if(res.data.status === 'success'){
-                setContacts({contactsList: res.data})
+            if(res.status === 200){
+                // console.log(res.data)
+                setContacts(res.data)
             }
             else if(res.data.status === 'fail') {
                 // TO DO:
             }
         })
     }
+
+    const deleteContact = (id) => {
+        axios({
+            method: "DELETE",
+            url: "http://localhost:5000/contact/contacts/" + id
+        })
+        .then(res => {
+            // Do something
+            setContacts(contacts.filter(contact => contact._id !== id))
+        })
+    }
     useEffect(() => {
         getAllContacts();
-    }
-    )
+    },[])
 
-    const ContactsComponents = contacts.contactsList.map(contactInfo => <Contact info={contactInfo}/>);
+    // const ContactsComponents = ;
     return <div className="contacts">
-        <Container className="contacts-list">
-            {ContactsComponents}
-        </Container>
+        {/* <Container className="contacts-list"> */}
+            {contacts.map((contactInfo) =>{ return <Contact info={contactInfo} deleteFunction={deleteContact}/>})}
+        {/* </Container> */}
         <div className="add-new-contact gap-2">
          <Container>
          <ContactAdd></ContactAdd>

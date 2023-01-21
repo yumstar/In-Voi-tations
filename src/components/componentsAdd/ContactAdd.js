@@ -39,8 +39,11 @@ const handleSubmit = (e) => {
         data: contact
     })
     .then((res) => {
-        if(Response.data.status === 'fail') {
+        if(res.data.status === 'fail') {
             // TO DO:
+        }
+        else if (res.status === 200) {
+          window.location.reload();
         }
     })
 }
