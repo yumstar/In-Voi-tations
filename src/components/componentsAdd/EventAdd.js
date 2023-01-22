@@ -6,29 +6,85 @@ import Row from 'react-bootstrap/Row';
 export default function EventAdd(){
 
 
-const [event, setEvent] = useState({
+const [eventInfo, setEvent] = useState({
     name: '',
-    date: new Date(),
+    year: (new Date()).getFullYear(),
+    month: 0,
+    day: 1,
+    // date: new Date(),
     time: new Date(),
 })
 
-const onChangeName = (e) => {
-    setEvent({...event, name: e.target.value})
+const getYearsOptions = () => {
+    const years = []
+    const currentYear = new Date();
+    years[0] = currentYear.getFullYear();
+    // years[0] = eventInfo.year
+    for(var i = 1; i < 10; i++) {years[i] = years[0] + i;}
+    return years.map(year => {return <option value={year}>{year}</option>})
 }
-const onChangeDate = (e) => {
-    setEvent({...event, email: new Date()})
+const getMonthsOptions = () => {
+    const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    return months.map(month => {return <option value={month}>{month}</option>})
+}
+const getDatesOptions = () => {
+    let lastDateInMonth;
+    if((eventInfo.month === 1 && eventInfo.year % 4 == 0)) {
+        lastDateInMonth = 29;
+    }
+    else if(eventInfo.month == 1 ) {
+        lastDateInMonth = 28;
+    }
+    else if((eventInfo.month % 2 === 0 && eventInfo.month < 7) || (eventInfo.month % 2 === 1 && eventInfo.month >= 7)) {
+        lastDateInMonth = 31;
+    }
+    else {
+        lastDateInMonth = 30
+    }
+    // const days = 31
+    const datesInMonth = [];
+    for(var i = 0; i < lastDateInMonth; i++) {datesInMonth[i] = i+1;}
+    // // for(var i = 0; i < lastDateInMonth; i++) {datesInMonth[i] = i + 1;}
+    return datesInMonth.map(date => {return <option value={date}>{date}</option>})
 }
 
+const onChangeName = (e) => {
+    setEvent({...eventInfo, name: e.target.value})
+}
+
+// const onChangeDateYear = (e) => {
+//     setEvent({...eventInfo, year: eventInfo.date.setFullYear(e.target.value)});
+//     onChangeDateDate();
+// }
+const onChangeDateYear = (e) => {
+    setEvent({...eventInfo, year: e.target.value});
+    onChangeDateDate();
+}
+const onChangeDateMonth = (e) => {
+    setEvent({...eventInfo, month: e.target.value - 1});
+    onChangeDateDate();
+}
+// const onChangeDateMonth = (e) => {
+//     setEvent({...eventInfo, month: eventInfo.date.setMonth(e.target.value - 1)});
+//     onChangeDateDate();
+// }
+
+const onChangeDateDate = (e) => {
+    setEvent({...eventInfo, day: e.target.value - 1});
+}
+
+
 const onChangeTime = (e) => {
-    setEvent({...event, phone: new Date()})
+    setEvent({...eventInfo, phone: new Date()})
 }
 
 const handleSubmit = (e) => {
     e.preventDefault()
+    const eventInfoDated = {...eventInfo, date: new Date(eventInfo.year, eventInfo.month, eventInfo.day)};
     axios({
         method: "POST",
         url: "http://localhost:5000/eventInfo/addEventInfo",
-        data: event
+        data: eventInfoDated
     })
     .then((res) => {
         if(res.data.status === 'fail') {
@@ -46,21 +102,35 @@ const handleSubmit = (e) => {
     <Form>
         <Form.Group controlId="inputName">
         <Form.Label>Name:</Form.Label>
-        <Form.Control type="text" placeholder="First Name" value={event.name} onChange={onChangeName}/>
+        <Form.Control type="text" placeholder="Name" value={eventInfo.name} onChange={onChangeName}/>
       </Form.Group>
       <Form.Group controlId="inputDate">
-        <Form.Label>Date:</Form.Label>
-        <Form.Control type="text" placeholder="Last Name" value={event.date} onChange={onChangeDate}/>
+      <Form.Label>Year:</Form.Label>
+      <Form.Select value={eventInfo.year} onChange={onChangeDateYear}>
+      {getYearsOptions()}
+    </Form.Select>
+    <Form.Label>Month:</Form.Label>
+    <Form.Select value={eventInfo.month} onChange={onChangeDateMonth}>
+      {getMonthsOptions()}
+    </Form.Select>
+    <Form.Label>:</Form.Label>
+    <Form.Select value={eventInfo.day} onChange={onChangeDateDate}>
+      {getDatesOptions()}
+    </Form.Select>
       </Form.Group>
+      {/* <Form.Group controlId="inputDate">
+        <Form.Label>Date:</Form.Label>
+        <Form.Control type="text" placeholder="Date" value={eventInfo.date} onChange={onChangeDate}/>
+      </Form.Group> */}
       <Form.Group controlId="inputTime">
         <Form.Label>Time:</Form.Label>
-        <Form.Control type="text" placeholder="Phone" value={event.time} onChange={onChangeTime}/>
+        <Form.Control type="text" placeholder="Time" value={eventInfo.time} onChange={onChangeTime}/>
       </Form.Group>
       {/* <Form.Text>Birthday</Form.Text>
       <Row>
       <Form.Group controlId="inputBirthdayMonth">
         <Form.Label>Month</Form.Label>
-        <Form.Control type="" placeholder="Email" value={event.email} onChange={onChangeEmail}/>
+        <Form.Control type="" placeholder="Email" value={eventInfo.email} onChange={onChangeEmail}/>
       </Form.Group>
       </Row> */}
 

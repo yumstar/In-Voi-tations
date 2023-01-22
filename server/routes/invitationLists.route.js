@@ -11,21 +11,19 @@ invitationListRouter.route("/").get((req, res) => {
   });
 
 invitationListRouter.route("/addInvitationList").post((req, res) => {
-    // const name = req.body.name;
-    // const date = Date.parse(req.body.date);
-    // const time = Date.parse(req.body.time);
+    const event = req.body.event;
+    const list = req.body.list;
 
-    // const newInvitationList = new InvitationList (
-    //     {
-    //         name,
-    //         date,
-    //         time
-    //     }
-    // )
+    const newInvitationList = new InvitationList (
+        {
+          event,
+          list
+        }
+    )
 
-    // newInvitationList.save()
-    // .then(() => res.json('New invitation list added to database'))
-    // .catch(err => res.status(400).json('Error: ' + err));
+    newInvitationList.save()
+    .then(() => res.json('New invitation list added to database'))
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 invitationListRouter.route('/invitationLists/:id').get((req, res) => {

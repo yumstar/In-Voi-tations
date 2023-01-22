@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
-import Contact from "../models/contact.model.js";
-import EventInfo from "../models/eventInfo.model.js";
+import contactSchema from "./contact.schema.js";
+import eventInfoSchema from "./eventInfo.schema.js";
 const invitationListSchema = new mongoose.Schema({
-    event: EventInfo,
-    list: [Contact]
+    event: eventInfoSchema,
+    list: [contactSchema]
 })
+
+export default invitationListSchema
