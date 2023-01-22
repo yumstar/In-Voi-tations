@@ -3,7 +3,7 @@ import './App.css';
 import { Route, Routes} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MainPage from './components/MainPage'
-import InvitationList from './components/InvitationList';
+import InvitationListList from './components/InvitationListList';
 import EventList from './components/EventList';
 import ContactList from './components/ContactList';
 import Navbar from 'react-bootstrap/Navbar';
@@ -32,7 +32,7 @@ function App() {
       </Navbar>
      <Routes>
       <Route path='/' element={<MainPage/>}/>
-      <Route path='/invite' element={<InvitationList/>}/>
+      <Route path='/invite' element={<InvitationListList/>}/>
       <Route path='/friends' element={<ContactList/>}/>
       <Route path='/events' element={<EventList/>}/>
       {/* <Route path='/settings' element={<InvitationList/>}/> */}

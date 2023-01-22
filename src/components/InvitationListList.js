@@ -5,19 +5,20 @@ import EventAdd from "./componentsAdd/EventAdd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import EventInfo from "./Event"
-export default function InvitationList() {
+import InvitationListAdd from "./componentsAdd/InvitationListAdd"
+export default function InvitationListList() {
     // use 
-    const [events, setEvents] = useState([]);
+    const [invitationLists, setInvitationLists] = useState([]);
 
-    const getAllEvents = () => {
+    const getAllInvitationLists = () => {
         axios({
             method: "GET",
-            url: "http://localhost:5000/eventInfo/"
+            url: "http://localhost:5000/invitationList/"
         })
         .then((res) => {
             if(res.status === 200){
                 // console.log(res.data)
-                setEvents(res.data)
+                setInvitationLists(res.data)
             }
             else if(res.data.status === 'fail') {
                 // TO DO:
@@ -25,27 +26,27 @@ export default function InvitationList() {
         })
     }
 
-    const deleteEvent = (id) => {
+    const deleteInvitationLists = (id) => {
         axios({
             method: "DELETE",
-            url: "http://localhost:5000/eventInfo/eventInfos/" + id
+            url: "http://localhost:5000/invitationList/invitationLists/" + id
         })
         .then(res => {
             // Do something
-            setEvents(events.filter(event => event._id !== id))
+            setInvitationLists(invitationLists.filter(event => event._id !== id))
         })
     }
     useEffect(() => {
-        getAllEvents();
+        getAllInvitationLists();
     },[])
 
-    return <div className="events">
+    return <div className="invitation-lists">
         {/* <Container className="events-list"> */}
-            {events.map((eventInfo) =>{ return <EventInfo info={eventInfo} deleteFunction={deleteEvent}/>})}
+            {/* {events.map((eventInfo) =>{ return <EventInfo info={eventInfo} deleteFunction={deleteEvent}/>})} */}
         {/* </Container> */}
         <div className="add-new-event gap-2">
          <Container>
-         <EventAdd></EventAdd>
+         <InvitationListAdd></InvitationListAdd>
             </Container>   
         </div>
     </div>
