@@ -3,11 +3,12 @@ import axios from 'axios'
 import Form from 'react-bootstrap/Form'
 import Button  from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
+import BootstrapSelect from 'react-bootstrap-select-dropdown'
 // import EventInfo from "../../../server/models/eventInfo.model";
 // import Contact from "../../../server/models/contact.model";
 export default function ContactAdd(){
 
-
+const [contactOptions, setContactOptions] = useState([]);
 const [contactList, setContactList] = useState([])
 const [eventInfo, setEventInfo] = useState({name: "sss"})
 const [contacts, setContacts] = useState([])
@@ -22,7 +23,7 @@ const getAllEvents = () => {
       if(res.status === 200){
           // console.log(res.data)
           setEvents(res.data)
-          console.log(events)
+          // console.log(events)
   
       }
       else if(res.data.status === 'fail') {
@@ -40,7 +41,7 @@ const getAllContacts = () => {
       if(res.status === 200){
           // console.log(res.data)
           setContacts(res.data)
-          console.log(contacts)
+          // console.log(contacts)
       }
       else if(res.data.status === 'fail') {
           // TO DO:
@@ -48,27 +49,67 @@ const getAllContacts = () => {
   })
 }
 useEffect(() => {
-  getAllEvents();
-  getAllContacts();
-}, [])
+  if(events.length === 0) {
+    getAllEvents();
+  }
+    
+}, [events])
+
+useEffect(() => {
+  if(contacts.length === 0) {
+    getAllContacts();
+  }
+  if(contactOptions.length === 0) {
+    getContactsOptions();
+  }
+  // getContactsOptions();
+}, [contacts])
 
 const getEventsOptions = () => {
   return events.map(eventInfo => {return <option value={eventInfo._id}>{eventInfo.name}</option>})
 }
 
+
 const getContactsOptions = () => {
-  return contacts.map(contact => {return <option value={contact._id}>{contact.firstName + " " + contact.lastName}</option>})
+  // console.log("yes")
+  
+  // return contacts.map(contact => {return <option value={contact._id}>{contact.firstName + " " + contact.lastName}</option>})
+
+ contacts.forEach((contact, index) => {contactOptions[index] = {
+  "labelKey": contact._id,
+  "value": contact.firstName + " " + contact.lastName
+ }
+})
+// console.log(contactOptions)
+//  return contactOptions
 }
 
 const onChangeEvent = (e) => {
-  const eventsWithId = events.filter(event => event._id = e.target.value)
+  console.log(e)
+  const eventsWithId = events.filter(event => event._id === e.target.value)
+  console.log(eventsWithId)
   const eventWithId = eventsWithId[0]
+  console.log(eventWithId)
   setEventInfo(eventWithId);
 }
-const onChangeContactList = (e) => {
-  const contactsWithId = contacts.filter(contact => contact._id = e.target.value)
-  const contactWithId = contactsWithId[0]
-  setContactList([...contactList, contactWithId]);
+// const onChangeContactList = (e) => {
+//   const contactsWithId = contacts.filter(contact => contact._id === e.target.value)
+//   const contactWithId = contactsWithId[0]
+//   setContactList(contact => [...contact, contactWithId]);
+// }
+
+const onChangeContactList = (selectedOptions) => {
+  var selectedContacts = selectedOptions.selectedKey
+  selectedContacts.forEach((item) => {
+    const contactsWithId = contacts.filter(contact => contact._id === item)
+    const contactWithId = contactsWithId[0]
+    if(!contactList.find(contact => contact._id === contactWithId._id)) {
+      setContactList([...contactList, contactWithId])
+    }
+  } )
+  // const contactsWithId = contacts.filter(contact => contact._id === selectedOptions)
+  // const contactWithId = contactsWithId[0]
+  // setContactList(contact => [...contact, contactWithId]);
 }
 const handleSubmit = (e) => {
     e.preventDefault()
@@ -95,15 +136,16 @@ const handleSubmit = (e) => {
  return  (<Form>
     <Form.Group controlId="inputEvent">
       <Form.Label>Event:</Form.Label>
-      <Form.Select value={eventInfo} onChange={onChangeEvent}>
+      <Form.Select onChange={onChangeEvent} value={events[0]? events[0]._id : null}>
       {getEventsOptions()}
     </Form.Select>
     </Form.Group>
     <Form.Group controlId="inputContacts">
-      <Form.Label>Contacts</Form.Label>
-      <Form.Select value={contactList[0]} onChange={onChangeContactList}>
-      {getContactsOptions()}
-    </Form.Select>
+      <Form.Label>Contacts: </Form.Label>
+      {/* <Form.Select value={contactList} onChange={onChangeContactList}> */}
+      <BootstrapSelect options={contactOptions} onChange={onChangeContactList} isMultiSelect/>
+      {/* {getContactsOptions()} */}
+    {/* </Form.Select> */}
     </Form.Group>
     {/* //     <Form.Group controlId="inputfirstName">
     //     <Form.Label>First Name:</Form.Label>
