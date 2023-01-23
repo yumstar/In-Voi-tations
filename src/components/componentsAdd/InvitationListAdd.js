@@ -71,32 +71,18 @@ const getEventsOptions = () => {
 
 
 const getContactsOptions = () => {
-  // console.log("yes")
-  
-  // return contacts.map(contact => {return <option value={contact._id}>{contact.firstName + " " + contact.lastName}</option>})
-
  contacts.forEach((contact, index) => {contactOptions[index] = {
   "labelKey": contact._id,
   "value": contact.firstName + " " + contact.lastName
  }
 })
-// console.log(contactOptions)
-//  return contactOptions
 }
 
 const onChangeEvent = (e) => {
-  console.log(e)
   const eventsWithId = events.filter(event => event._id === e.target.value)
-  console.log(eventsWithId)
   const eventWithId = eventsWithId[0]
-  console.log(eventWithId)
   setEventInfo(eventWithId);
 }
-// const onChangeContactList = (e) => {
-//   const contactsWithId = contacts.filter(contact => contact._id === e.target.value)
-//   const contactWithId = contactsWithId[0]
-//   setContactList(contact => [...contact, contactWithId]);
-// }
 
 const onChangeContactList = (selectedOptions) => {
   var selectedContacts = selectedOptions.selectedKey
@@ -107,9 +93,6 @@ const onChangeContactList = (selectedOptions) => {
       setContactList([...contactList, contactWithId])
     }
   } )
-  // const contactsWithId = contacts.filter(contact => contact._id === selectedOptions)
-  // const contactWithId = contactsWithId[0]
-  // setContactList(contact => [...contact, contactWithId]);
 }
 const handleSubmit = (e) => {
     e.preventDefault()
@@ -131,12 +114,10 @@ const handleSubmit = (e) => {
 
 //TO DO: replace with floating labels if have time
 // TO DO: modal-ize
-// getAllEvents();
-// getAllContacts();
  return  (<Form>
     <Form.Group controlId="inputEvent">
       <Form.Label>Event:</Form.Label>
-      <Form.Select onChange={onChangeEvent} value={events[0]? events[0]._id : null}>
+      <Form.Select onChange={onChangeEvent} value={null}>
       {getEventsOptions()}
     </Form.Select>
     </Form.Group>

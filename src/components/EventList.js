@@ -40,9 +40,9 @@ export default function EventList() {
     },[])
 
     return <div className="events">
-        {/* <Container className="events-list"> */}
+        <Container className="events-list">
             {events.map((eventInfo) =>{ return <EventInfo info={eventInfo} deleteFunction={deleteEvent}/>})}
-        {/* </Container> */}
+        </Container>
         <div className="add-new-event gap-2">
          <Container>
          <EventAdd></EventAdd>

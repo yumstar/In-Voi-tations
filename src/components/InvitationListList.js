@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import EventInfo from "./Event"
 import InvitationListAdd from "./componentsAdd/InvitationListAdd"
+import InvitationList from "./InvitationList";
 export default function InvitationListList() {
     // use 
     const [invitationLists, setInvitationLists] = useState([]);
@@ -42,7 +43,7 @@ export default function InvitationListList() {
 
     return <div className="invitation-lists">
         {/* <Container className="events-list"> */}
-            {/* {events.map((eventInfo) =>{ return <EventInfo info={eventInfo} deleteFunction={deleteEvent}/>})} */}
+            {invitationLists.map((invitationList) =>{ return <InvitationList event={invitationList.event} list={invitationList.list}/>})}
         {/* </Container> */}
         <div className="add-new-event gap-2">
          <Container>
