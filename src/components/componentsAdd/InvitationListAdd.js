@@ -152,6 +152,6 @@ const handleSubmit = (e) => {
     //   </Form.Group>
     //   </Row> */}
 
-    <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Invite</Button>
+    <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Set List</Button>
      </Form>)
 }

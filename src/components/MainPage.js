@@ -2,7 +2,8 @@ import Button from 'react-bootstrap/Button'
 function MainPage() {
     
     return <div>
-    <Button variant='primary'>1</Button>
+    <p className='h1'>Welcome!</p>
+    <p>Start by adding your contacts on the friends page.</p>
     </div>
 }
 

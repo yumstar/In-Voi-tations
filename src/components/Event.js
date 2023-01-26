@@ -11,7 +11,7 @@ export default function EventInfo(props) {
     <span className="h3 float-left">{"Date: " + dateFormat(props.info.date, "fullDate")}</span>
     <span className="h3 float-right">{props.info.time && "Time: " + props.info.time}</span>
     </Row>
-    <Button variant="danger" onClick={() => {props.deleteFunction(props.info._id)}}>Delete Event</Button>
+    {props.deleteFunction && <Button variant="danger" onClick={() => {props.deleteFunction(props.info._id)}}>Delete Event</Button>}
 </Container>
 )
 }

@@ -16,7 +16,7 @@ export default function Contact(props) {
             <span className="h3 float-left">{"Phone: " + props.info.phone}</span>
             <span className="h3 float-right">{props.info.email && "E-mail: " + props.info.email}</span>
             </Row>
-            <Button variant="danger" onClick={() => {props.deleteFunction(props.info._id)}}>Delete Contact</Button>
+           {props.deleteFunction && <Button variant="danger" onClick={() => {props.deleteFunction(props.info._id)}}>Delete Contact</Button>}
     </Container>
     )
 }
