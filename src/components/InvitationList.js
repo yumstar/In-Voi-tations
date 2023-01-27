@@ -9,5 +9,6 @@ export default function InvitationList(props) {
         <EventInfo info={props.event}/>
         {props.list.map(contact => {return <Contact info={contact} />})}
         {/* <Button type="submit" onClick={handleSubmitEmail} className="m-3"variant="success" size="lg">Invite By Email</Button> */}
+        {props.deleteFunction && <Button variant="danger" onClick={() => {props.deleteFunction(props.info._id)}}>Delete List</Button>}
         </Container>
 }

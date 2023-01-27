@@ -13,6 +13,6 @@ app.use(express.json())
 app.use("/contact", contactRouter)
 app.use("/eventInfo", eventInfoRouter)
 app.use("/invitationList", invitationListRouter)
-app.use("invite", inviteRouter)
+app.use("/invite", inviteRouter)
 
 export default app

@@ -1,6 +1,6 @@
 import express from "express"
 const contactRouter = express.Router();
-
+import axios from "axios"
 import Contact from "../models/contact.model.js";
 // const Contact = require("../models/model.contacts.model")
 
@@ -17,20 +17,44 @@ contactRouter.route("/addContact").post((req, res) => {
     const birthday = Date.parse(req.body.birthday);
     const phone = req.body.phone;
     const email = req.body.email;
+    axios.get('https://emailvalidation.abstractapi.com/v1/?api_key=2eca90fcc0114db2a5190f72ae81cf33&email=' + email)
+    .then((response) => {
+      console.log(response)
+      if(response.data.deliverability == "DELIVERABLE"){
+        const newContact = new Contact (
+          {
+              firstName,
+              lastName,
+              birthday,
+              phone,
+              email
+          }
+      )
+  
+      newContact.save()
+      .then(() => res.json('Contact added to database'))
+      .catch(err => res.status(400).json('Error: ' + err));
+      }
+      else {
+        throw new Error("Unable to verify email: " + email)
+      }
+    })
+    .catch(error => {
+      res.status(400).json({errorMsg : error})
+    })
+    // const newContact = new Contact (
+    //     {
+    //         firstName,
+    //         lastName,
+    //         birthday,
+    //         phone,
+    //         email
+    //     }
+    // )
 
-    const newContact = new Contact (
-        {
-            firstName,
-            lastName,
-            birthday,
-            phone,
-            email
-        }
-    )
-
-    newContact.save()
-    .then(() => res.json('Contact added to database'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    // newContact.save()
+    // .then(() => res.json('Contact added to database'))
+    // .catch(err => res.status(400).json('Error: ' + err));
 });
 
 contactRouter.route('/contacts/:id').get((req, res) => {
