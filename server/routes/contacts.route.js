@@ -17,7 +17,7 @@ contactRouter.route("/addContact").post((req, res) => {
     const birthday = Date.parse(req.body.birthday);
     const phone = req.body.phone;
     const email = req.body.email;
-    axios.get('https://emailvalidation.abstractapi.com/v1/?api_key=2eca90fcc0114db2a5190f72ae81cf33&email=' + email)
+    axios.get('https://emailvalidation.abstractapi.com/v1/?api_key=' + process.env.ABSTRACT_API_KEY + '&email=' + email)
     .then((response) => {
       console.log(response)
       if(response.data.deliverability == "DELIVERABLE"){
