@@ -5,14 +5,29 @@ import Button  from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 export default function EventAdd(){
 
+const PERIODS = [
+    {
+        text: "AM",
+        value: 0
+    },
+    {
+        text: "PM",
+        value: 12
+    }
+]
 
+
+const MINUTESINHOURS = 60
 const [eventInfo, setEvent] = useState({
     name: '',
     year: (new Date()).getFullYear(),
     month: 0,
     day: 1,
     // date: new Date(),
-    time: new Date(),
+    hour: 0,
+    minute: 0,
+    period: PERIODS[0] 
+
 })
 
 const getYearsOptions = () => {
@@ -47,7 +62,20 @@ const getDatesOptions = () => {
     // // for(var i = 0; i < lastDateInMonth; i++) {datesInMonth[i] = i + 1;}
     return datesInMonth.map(date => {return <option value={date}>{date}</option>})
 }
-
+const getHourOptions = () => {
+    const hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    return hours.map(hour => {return <option value={hour % 12}>{hour}</option>}) 
+}
+const getMinutesOptions = () => {
+    var minutes = []
+    for(var i = 0; i < MINUTESINHOURS; i++) {
+        minutes.push(i)
+    }
+    return minutes.map(minute => {return <option value={minute}>{minute}</option>}) 
+}
+const getPeriodOptions = () => {
+    return PERIODS.map(period => {return <option value={period.value}>{period.text}</option>})
+}
 const onChangeName = (e) => {
     setEvent({...eventInfo, name: e.target.value})
 }
@@ -71,11 +99,24 @@ const onChangeDateMonth = (e) => {
 
 const onChangeDateDate = (e) => {
     setEvent({...eventInfo, day: e.target.value - 1});
+    console.log()
 }
 
-
-const onChangeTime = (e) => {
-    setEvent({...eventInfo, phone: new Date()})
+const onChangeTimeHour = (e) => {
+    setEvent({...eventInfo, hour: parseInt(e.target.value) + eventInfo.period.value});
+    console.log(eventInfo)
+}
+const onChangeTimeMinute = (e) => {
+    setEvent({...eventInfo, minute: parseInt(e.target.value)});
+    console.log(eventInfo)
+}
+const onChangeTimePeriod = (e) => {
+    console.log(PERIODS)
+    console.log(e.target)
+    const matchingPeriods = PERIODS.filter(period => period.value == e.target.value)
+    const matchingPeriod = matchingPeriods[0]
+    setEvent({...eventInfo, period: matchingPeriod})
+    console.log(eventInfo)
 }
 
 const handleSubmit = (e) => {
@@ -113,7 +154,7 @@ const handleSubmit = (e) => {
     <Form.Select value={eventInfo.month} onChange={onChangeDateMonth}>
       {getMonthsOptions()}
     </Form.Select>
-    <Form.Label>:</Form.Label>
+    <Form.Label>Day:</Form.Label>
     <Form.Select value={eventInfo.day} onChange={onChangeDateDate}>
       {getDatesOptions()}
     </Form.Select>
@@ -124,7 +165,17 @@ const handleSubmit = (e) => {
       </Form.Group> */}
       <Form.Group controlId="inputTime">
         <Form.Label>Time:</Form.Label>
-        <Form.Control type="text" placeholder="Time" value={eventInfo.time} onChange={onChangeTime}/>
+        <Form.Select value={eventInfo.hour} onChange={onChangeTimeHour}>
+            {getHourOptions()}
+        </Form.Select>
+        <Form.Label>:</Form.Label>
+        <Form.Select value={eventInfo.minute} onChange={onChangeTimeMinute}>
+            {getMinutesOptions()}
+        </Form.Select>
+        <Form.Select value={eventInfo.period.value} onChange={onChangeTimePeriod}>
+            {getPeriodOptions()}
+        </Form.Select>
+        {/* <Form.Control type="text" placeholder="Time" value={eventInfo.time} onChange={onChangeTime}/> */}
       </Form.Group>
       {/* <Form.Text>Birthday</Form.Text>
       <Row>
