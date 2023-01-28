@@ -52,7 +52,10 @@ useEffect(() => {
   if(events.length === 0) {
     getAllEvents();
   }
-    
+  if(events.length > 0 ) {
+    setEventInfo(events[0])
+  }
+  
 }, [events])
 
 useEffect(() => {
@@ -65,6 +68,10 @@ useEffect(() => {
   // getContactsOptions();
 }, [contacts])
 
+
+useEffect(() => {
+
+})
 const getEventsOptions = () => {
   return events.map(eventInfo => {return <option value={eventInfo._id}>{eventInfo.name}</option>})
 }

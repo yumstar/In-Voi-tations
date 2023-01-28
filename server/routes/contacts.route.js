@@ -2,6 +2,8 @@ import express from "express"
 const contactRouter = express.Router();
 import axios from "axios"
 import Contact from "../models/contact.model.js";
+import dotenv from "dotenv"
+dotenv.config()
 // const Contact = require("../models/model.contacts.model")
 
 
@@ -17,7 +19,7 @@ contactRouter.route("/addContact").post((req, res) => {
     const birthday = Date.parse(req.body.birthday);
     const phone = req.body.phone;
     const email = req.body.email;
-    axios.get('https://emailvalidation.abstractapi.com/v1/?api_key=' + process.env.ABSTRACT_API_KEY + '&email=' + email)
+    axios.get(`https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${email}`)
     .then((response) => {
       console.log(response)
       if(response.data.deliverability == "DELIVERABLE"){

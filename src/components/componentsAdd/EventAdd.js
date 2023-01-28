@@ -3,6 +3,8 @@ import axios from 'axios'
 import Form from 'react-bootstrap/Form'
 import Button  from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
+import dateFormat from "dateformat";
+import { useEffect } from "react";
 export default function EventAdd(){
 
 const PERIODS = [
@@ -20,6 +22,7 @@ const PERIODS = [
 const MINUTESINHOURS = 60
 const [eventInfo, setEvent] = useState({
     name: '',
+    location: '',
     year: (new Date()).getFullYear(),
     month: 0,
     day: 1,
@@ -30,6 +33,7 @@ const [eventInfo, setEvent] = useState({
 
 })
 
+
 const getYearsOptions = () => {
     const years = []
     const currentYear = new Date();
@@ -39,8 +43,8 @@ const getYearsOptions = () => {
     return years.map(year => {return <option value={year}>{year}</option>})
 }
 const getMonthsOptions = () => {
-    const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    return months.map(month => {return <option value={month}>{month}</option>})
+    const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    return months.map(month => {return <option value={month}>{month+1}</option>})
 }
 const getDatesOptions = () => {
     let lastDateInMonth;
@@ -71,7 +75,7 @@ const getMinutesOptions = () => {
     for(var i = 0; i < MINUTESINHOURS; i++) {
         minutes.push(i)
     }
-    return minutes.map(minute => {return <option value={minute}>{minute}</option>}) 
+    return minutes.map(minute => {return <option value={minute}>{(minute < 10? "0" : "") + minute}</option>}) 
 }
 const getPeriodOptions = () => {
     return PERIODS.map(period => {return <option value={period.value}>{period.text}</option>})
@@ -79,18 +83,20 @@ const getPeriodOptions = () => {
 const onChangeName = (e) => {
     setEvent({...eventInfo, name: e.target.value})
 }
-
+const onChangeLocation = (e) => {
+    setEvent({...eventInfo, location: e.target.value})
+}
 // const onChangeDateYear = (e) => {
 //     setEvent({...eventInfo, year: eventInfo.date.setFullYear(e.target.value)});
 //     onChangeDateDate();
 // }
 const onChangeDateYear = (e) => {
-    setEvent({...eventInfo, year: e.target.value});
-    onChangeDateDate();
+    setEvent({...eventInfo, year: e.target.value, day: 0});
+    // onChangeDateDate();
 }
 const onChangeDateMonth = (e) => {
-    setEvent({...eventInfo, month: e.target.value - 1});
-    onChangeDateDate();
+    setEvent({...eventInfo, month: e.target.value, day: 0});
+    // onChangeDateDate();
 }
 // const onChangeDateMonth = (e) => {
 //     setEvent({...eventInfo, month: eventInfo.date.setMonth(e.target.value - 1)});
@@ -98,7 +104,7 @@ const onChangeDateMonth = (e) => {
 // }
 
 const onChangeDateDate = (e) => {
-    setEvent({...eventInfo, day: e.target.value - 1});
+    setEvent({...eventInfo, day: e.target.value});
     console.log()
 }
 
@@ -111,17 +117,14 @@ const onChangeTimeMinute = (e) => {
     console.log(eventInfo)
 }
 const onChangeTimePeriod = (e) => {
-    console.log(PERIODS)
-    console.log(e.target)
     const matchingPeriods = PERIODS.filter(period => period.value == e.target.value)
     const matchingPeriod = matchingPeriods[0]
     setEvent({...eventInfo, period: matchingPeriod})
-    console.log(eventInfo)
 }
 
 const handleSubmit = (e) => {
     e.preventDefault()
-    const eventInfoDated = {...eventInfo, date: new Date(eventInfo.year, eventInfo.month, eventInfo.day)};
+    const eventInfoDated = {...eventInfo, date: new Date(eventInfo.year, eventInfo.month, eventInfo.day), time: new Date(eventInfo.year, eventInfo.month, eventInfo.day, eventInfo.hour, eventInfo.minute)};
     axios({
         method: "POST",
         url: "http://localhost:5000/eventInfo/addEventInfo",
@@ -144,6 +147,10 @@ const handleSubmit = (e) => {
         <Form.Group controlId="inputName">
         <Form.Label>Name:</Form.Label>
         <Form.Control type="text" placeholder="Name" value={eventInfo.name} onChange={onChangeName}/>
+      </Form.Group>
+      <Form.Group controlId="inputLocation">
+        <Form.Label>Location:</Form.Label>
+        <Form.Control type="text" placeholder="Location" value={eventInfo.location} onChange={onChangeLocation}/>
       </Form.Group>
       <Form.Group controlId="inputDate">
       <Form.Label>Year:</Form.Label>

@@ -11,17 +11,34 @@ eventInfoRouter.route("/").get((req, res) => {
   });
 
 eventInfoRouter.route("/addEventInfo").post((req, res) => {
+    let location
     const name = req.body.name;
     const date = Date.parse(req.body.date);
     const time = Date.parse(req.body.time);
-
-    const newEventInfo = new EventInfo (
+    if(req.body.location) {
+      location = req.body.location
+    }
+   
+    if(req.body.location) {
+      var newEventInfo = new EventInfo (
         {
             name,
             date,
-            time
+            time,
+            location
         }
     )
+    }
+    else {
+      var newEventInfo = new EventInfo (
+        {
+            name,
+            date,
+            time,
+        }
+    )
+    }
+
 
     newEventInfo.save()
     .then(() => res.json('New event info added to database'))
@@ -46,6 +63,10 @@ eventInfoRouter.route('/eventInfos/:id').get((req, res) => {
         eventInfo.name = req.body.name;
         eventInfo.date = Date.parse(req.body.date);
         eventInfo.time = Date.parse(req.body.time);
+        if(req.body.location) {
+          eventInfo.location = req.body.location
+        }
+        
         eventInfo.save()
           .then(() => res.json(`Contact with id ${req.params.id} updated`))
           .catch(err => res.status(400).json('Error: ' + err));
