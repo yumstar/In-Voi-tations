@@ -20,6 +20,7 @@ export default function InvitationList(props) {
         {/* <Button type="submit" onClick={handleSubmitEmail} className="m-3"variant="success" size="lg">Invite By Email</Button> */}
         {props.deleteFunction && <Button variant="danger" onClick={() => {props.deleteFunction(props.info._id)}}>Delete List</Button>}
         {props.canUpdate && <Button variant="warning" onClick={handleShow}>Update List</Button>}
+        {props.inviteFunction && <Button variant="success" onClick={() => {props.inviteFunction(props.info._id)}}>Invite By Email</Button>}
         </Container>
         <Container>
       <Modal show={show} onHide={handleClose}>

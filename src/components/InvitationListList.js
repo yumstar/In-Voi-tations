@@ -37,13 +37,25 @@ export default function InvitationListList() {
             setInvitationLists(invitationLists.filter(event => event._id !== id))
         })
     }
+
+    const inviteByEmail = (id) => {
+        axios({
+            method: "POST",
+            url: "http://localhost:5000/invitationList/invitationLists/" + id + "/inviteByEmail",
+            data: id
+        })
+        .then(res => {
+            // Do something
+        })
+        .catch((error) => {console.log(error)})
+    }
     useEffect(() => {
         getAllInvitationLists();
     },[])
 
     return <div className="invitation-lists">
         {/* <Container className="events-list"> */}
-            {invitationLists.map((invitationList) =>{ return <InvitationList info={invitationList} event={invitationList.event} list={invitationList.list} deleteFunction={deleteInvitationLists} canUpdate/>})}
+            {invitationLists.map((invitationList) =>{ return <InvitationList info={invitationList} event={invitationList.event} list={invitationList.list} deleteFunction={deleteInvitationLists} inviteFunction={inviteByEmail} canUpdate/>})}
         {/* </Container> */}
         <div className="add-new-event gap-2">
          <Container>
