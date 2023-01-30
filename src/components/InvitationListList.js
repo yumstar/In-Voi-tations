@@ -43,7 +43,7 @@ export default function InvitationListList() {
 
     return <div className="invitation-lists">
         {/* <Container className="events-list"> */}
-            {invitationLists.map((invitationList) =>{ return <InvitationList info={invitationList} event={invitationList.event} list={invitationList.list} deleteFunction={deleteInvitationLists}/>})}
+            {invitationLists.map((invitationList) =>{ return <InvitationList info={invitationList} event={invitationList.event} list={invitationList.list} deleteFunction={deleteInvitationLists} canUpdate/>})}
         {/* </Container> */}
         <div className="add-new-event gap-2">
          <Container>

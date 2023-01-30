@@ -38,12 +38,11 @@ invitationListRouter.route('/invitationLists/:id').get((req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
   });
 
-  invitationListRouter.route('/invitationLists/update/:id').post((req, res) => {
+  invitationListRouter.route('/invitationLists/updateInvitationList/:id').post((req, res) => {
     InvitationList.findById(req.params.id)
       .then(invitationList => {
-        invitationList.name = req.body.name;
-        invitationList.date = Date.parse(req.body.date);
-        invitationList.time = Date.parse(req.body.time);
+        invitationList.event = req.body.event;
+        invitationList.list = req.body.list;
         invitationList.save()
           .then(() => res.json(`Invitation List with id ${req.params.id} updated`))
           .catch(err => res.status(400).json('Error: ' + err));

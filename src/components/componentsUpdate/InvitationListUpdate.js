@@ -4,17 +4,17 @@ import Form from 'react-bootstrap/Form'
 import Button  from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 import BootstrapSelect from 'react-bootstrap-select-dropdown'
-// import EventInfo from "../../../server/models/eventInfo.model";
-// import Contact from "../../../server/models/contact.model";
-export default function InvitaionListAdd(){
+export default function InvitationListUpdate(props){
 
 const [contactOptions, setContactOptions] = useState([]);
-const [contactList, setContactList] = useState([])
-const [eventInfo, setEventInfo] = useState({name: "sss"})
+const [defaultContactOptions, setDefaultContactOptions] = useState([]);
+const [contactList, setContactList] = useState(props.info.list)
+const [eventInfo, setEventInfo] = useState(props.info.event)
 const [contacts, setContacts] = useState([])
 const [events, setEvents] = useState([])
 const [checkedContactDB, setCheckedContactDB] = useState(false);
 const [checkedEventDB, setCheckeEventDB] = useState(false)
+
 const getAllEvents = () => {
   axios({
       method: "GET",
@@ -50,50 +50,56 @@ const getAllContacts = () => {
   })
 }
 useEffect(() => {
-  if(!checkedEventDB && events.length === 0) {
-    getAllEvents();
-    setCheckeEventDB(true);
-  }
-  if(events.length > 0 ) {
-    setEventInfo(events[0])
-  }
+    if(!checkedEventDB && events.length === 0) {
+      getAllEvents();
+      setCheckeEventDB(true);
+      if(events.length > 0 ) {
+        setEventInfo(props.info.event)
+      }
+    }
+
+    
+  }, [events])
   
-}, [events])
+  useEffect(() => {
+    if(!checkedContactDB && contacts.length === 0) {
+      getAllContacts();
+      setCheckedContactDB(true)
+    }
+    if(contactOptions.length === 0) {
+      getContactsOptions();
+      getDefaultContactOptions();
+    }
+    // getContactsOptions();
+  }, [contacts])
 
-useEffect(() => {
-  if(!checkedContactDB && contacts.length === 0) {
-    getAllContacts();
-    setCheckedContactDB(true)
-  }
-  if(contactOptions.length === 0) {
-    getContactsOptions();
-  }
-  // getContactsOptions();
-}, [contacts])
+  useEffect(() => {
+    console.log(props)
+  }, [])
 
-
-useEffect(() => {
-
-})
 const getEventsOptions = () => {
   return events.map(eventInfo => {return <option value={eventInfo._id}>{eventInfo.name}</option>})
 }
 
-// const getContactsOptions = () => {
-//   contacts.forEach((contact, index) => {setContactOptions([...contactOptions, {
-//    "labelKey": contact._id,
-//    "value": contact.firstName + " " + contact.lastName
-//   }
-//  ])})
-//  }
+
 
 const getContactsOptions = () => {
- contacts.forEach((contact, index) => {contactOptions[index] = {
-  "labelKey": contact._id,
-  "value": contact.firstName + " " + contact.lastName
- }
-})
-}
+    contacts.forEach((contact, index) => {contactOptions[index] = {
+     "labelKey": contact._id,
+     "value": contact.firstName + " " + contact.lastName,
+     "isSelected": true
+    //  "isSelected": contactList.find(otherContact => otherContact._id == contact._id) > 0? true: false
+    }
+   })
+   }
+
+const getDefaultContactOptions = () => {
+    props.info.list.forEach((contact, index) => {defaultContactOptions[index] = {
+        "labelKey": contact._id,
+        "value": contact._id
+       }
+      })
+      }
 
 const onChangeEvent = (e) => {
   const eventsWithId = events.filter(event => event._id === e.target.value)
@@ -108,15 +114,28 @@ const onChangeContactList = (selectedOptions) => {
     const contactWithId = contactsWithId[0]
     if(!contactList.find(contact => contact._id === contactWithId._id)) {
       setContactList([...contactList, contactWithId])
+      console.log(contactList)
+      console.log(selectedContacts)
     }
-  } )
+    
+  }
+  )
+    
+  contactList.forEach((contactInList) => {
+    if(!selectedContacts.find(selectedContact => selectedContact == contactInList._id)) {
+        setContactList( contactList.filter(contact => contact._id !== contactInList._id))
+        console.log(contactList)
+        console.log(selectedContacts)
+    }
+  }
+  )
 }
 const handleSubmit = (e) => {
     e.preventDefault()
     const finalInvitationList = {event: eventInfo, list: contactList}
     axios({
         method: "POST",
-        url: "http://localhost:5000/invitationList/addInvitationList",
+        url: "http://localhost:5000/invitationList/invitationLists/updateInvitationList/" + props.info._id,
         data: finalInvitationList
     })
     .then((res) => {
@@ -141,33 +160,10 @@ const handleSubmit = (e) => {
     <Form.Group controlId="inputContacts">
       <Form.Label>Contacts: </Form.Label>
       {/* <Form.Select value={contactList} onChange={onChangeContactList}> */}
-      <BootstrapSelect options={contactOptions} onChange={onChangeContactList} isMultiSelect/>
+      <BootstrapSelect options={contactOptions} defaultOptions={defaultContactOptions} onChange={onChangeContactList} isMultiSelect/>
       {/* {getContactsOptions()} */}
     {/* </Form.Select> */}
     </Form.Group>
-    {/* //     <Form.Group controlId="inputfirstName">
-    //     <Form.Label>First Name:</Form.Label>
-    //     <Form.Control type="text" placeholder="First Name" value={contact.firstName} onChange={onChangeFirstName}/>
-    //   </Form.Group>
-    //   <Form.Group controlId="inputLastName">
-    //     <Form.Label>Last Name:</Form.Label>
-    //     <Form.Control type="text" placeholder="Last Name" value={contact.lastName} onChange={onChangeLastName}/>
-    //   </Form.Group>
-    //   <Form.Group controlId="inputPhone">
-    //     <Form.Label>Phone:</Form.Label>
-    //     <Form.Control type="text" placeholder="Phone" value={contact.phone} onChange={onChangePhone}/>
-    //   </Form.Group>
-    //   <Form.Group controlId="inputEmail">
-    //     <Form.Label>E-mail:</Form.Label>
-    //     <Form.Control type="email" placeholder="Email" value={contact.email} onChange={onChangeEmail}/>
-    //   </Form.Group> */}
-       {/* <Form.Text>Birthday</Form.Text>
-    //   <Row>
-    //   <Form.Group controlId="inputBirthdayMonth">
-    //     <Form.Label>Month</Form.Label>
-    //     <Form.Control type="" placeholder="Email" value={contact.email} onChange={onChangeEmail}/>
-    //   </Form.Group>
-    //   </Row> */}
 
     <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Set List</Button>
      </Form>)
