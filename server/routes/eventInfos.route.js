@@ -7,7 +7,7 @@ const eventInfoRouter = express.Router();
 eventInfoRouter.route("/").get((req, res) => {
     EventInfo.find()
       .then(eventInfoList => res.json(eventInfoList))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
 eventInfoRouter.route("/addEventInfo").post((req, res) => {
@@ -42,19 +42,19 @@ eventInfoRouter.route("/addEventInfo").post((req, res) => {
 
     newEventInfo.save()
     .then(() => res.json('New event info added to database'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => res.status(400).json({error: err.message}));
 });
 
 eventInfoRouter.route('/eventInfos/:id').get((req, res) => {
     EventInfo.findById(req.params.id)
       .then(eventInfo => res.json(eventInfo))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
   eventInfoRouter.route('/eventInfos/:id').delete((req, res) => {
     EventInfo.findByIdAndDelete(req.params.id)
       .then(() => res.json(`Event info with id ${req.params.id} deleted`))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
   eventInfoRouter.route('/eventInfos/updateEventInfo/:id').post((req, res) => {
@@ -69,9 +69,9 @@ eventInfoRouter.route('/eventInfos/:id').get((req, res) => {
         
         eventInfo.save()
           .then(() => res.json(`Contact with id ${req.params.id} updated`))
-          .catch(err => res.status(400).json('Error: ' + err));
+          .catch(err => res.status(400).json({error: err.message}));
       })
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
   export default eventInfoRouter

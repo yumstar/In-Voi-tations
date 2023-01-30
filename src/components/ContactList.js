@@ -5,10 +5,18 @@ import ContactAdd from "./componentsAdd/ContactAdd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Contact from "./Contact"
+import Toast from "react-bootstrap/Toast"
+import ToastContainer  from "react-bootstrap/ToastContainer";
+
 export default function ContactList() {
     // use
     // const Contacts = 
     const [contacts, setContacts] = useState([]);
+
+    const [showToast, setShowToast] = useState(false)
+    const [toastMessage, setToastMessage] = useState("");
+    
+    const toggleShowToast = () => {setShowToast(!showToast)}
 
     const getAllContacts = () => {
         axios({
@@ -21,7 +29,8 @@ export default function ContactList() {
                 setContacts(res.data)
             }
             else if(res.data.status === 'fail') {
-                // TO DO:
+                setToastMessage("Invitations lists could not be retrieved");
+                setShowToast(true)
             }
         })
     }
@@ -34,20 +43,38 @@ export default function ContactList() {
         .then(res => {
             // Do something
             setContacts(contacts.filter(contact => contact._id !== id))
+            if (res.status >= 200 && res.status < 300) {
+                setToastMessage(res.data);
+                setShowToast(true)
+                setTimeout(() => {window.location.reload();}, 1000)
+              }
+        })
+        .catch((error) => {
+            setToastMessage("Contact with id " + id + " could not be deleted");
+            setShowToast(true)
         })
     }
     useEffect(() => {
         getAllContacts();
     },[])
     // const ContactsComponents = ;
-    return <div className="contacts">
+    return <Container className="contacts">
         {/* <Container className="contacts-list"> */}
             {contacts.map((contactInfo) =>{ return <Contact info={contactInfo} deleteFunction={deleteContact} canUpdate/>})}
         {/* </Container> */}
-        <div className="add-new-contact gap-2">
+        <Container className="add-new-contact gap-2">
          <Container>
          <ContactAdd></ContactAdd>
-            </Container>   
-        </div>
-    </div>
+            </Container>
+            <ToastContainer position="bottom-end">
+    <Toast show={showToast} onClose={toggleShowToast}>
+          <Toast.Header>
+            <strong className="me-auto">In-voi-tations</strong>
+            <small>Friends</small>
+          </Toast.Header>
+          <Toast.Body>{toastMessage}</Toast.Body>
+        </Toast>
+    </ToastContainer>   
+        </Container>
+    </Container>
 }

@@ -10,7 +10,7 @@ dotenv.config()
 contactRouter.route("/").get((req, res) => {
     Contact.find()
       .then(contactList => res.json(contactList))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: "Unable to get contacts"}));
   });
 
 contactRouter.route("/addContact").post((req, res) => {
@@ -41,8 +41,8 @@ contactRouter.route("/addContact").post((req, res) => {
         throw new Error("Unable to verify email: " + email)
       }
     })
-    .catch(error => {
-      res.status(400).json("Contact could not be added to database. Ensure that names are provided and phone numbers are at least 7 digits long and emails are deliverable to.")
+    .catch(err => {
+      res.status(400).json({error: err.message})
     })
     // const newContact = new Contact (
     //     {
@@ -62,13 +62,13 @@ contactRouter.route("/addContact").post((req, res) => {
 contactRouter.route('/contacts/:id').get((req, res) => {
     Contact.findById(req.params.id)
       .then(contact => res.json(contact))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
   contactRouter.route('/contacts/:id').delete((req, res) => {
     Contact.findByIdAndDelete(req.params.id)
       .then(() => res.json(`Contact with id ${req.params.id} deleted`))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
   contactRouter.route('/contacts/updateContact/:id').post((req, res) => {
@@ -81,9 +81,9 @@ contactRouter.route('/contacts/:id').get((req, res) => {
         contact.email = req.body.email;
         contact.save()
           .then(() => res.json(`Contact with id ${req.params.id} updated`))
-          .catch(err => res.status(400).json('Error: ' + err));
+          .catch(err => res.status(400).json({error: err.message}));
       })
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
   export default contactRouter

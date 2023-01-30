@@ -5,6 +5,9 @@ import Button  from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 import dateFormat from "dateformat";
 import { useEffect } from "react";
+import Toast from "react-bootstrap/Toast"
+import Container from "react-bootstrap/Container"
+import ToastContainer  from "react-bootstrap/ToastContainer";
 export default function EventAdd(){
 
 const PERIODS = [
@@ -32,7 +35,10 @@ const [eventInfo, setEvent] = useState({
     period: PERIODS[0] 
 
 })
+const [showToast, setShowToast] = useState(false)
+const [toastMessage, setToastMessage] = useState("");
 
+const toggleShowToast = () => {setShowToast(!showToast)}
 
 const getYearsOptions = () => {
     const years = []
@@ -131,18 +137,23 @@ const handleSubmit = (e) => {
         data: eventInfoDated
     })
     .then((res) => {
-        if(res.data.status === 'fail') {
-            // TO DO:
+        if (res.status >= 200 && res.status < 300) {
+          setToastMessage(res.data);
+          setShowToast(true)
+          setTimeout(() => {window.location.reload();}, 1000)
+          
         }
-        else if (res.status === 200) {
-          window.location.reload();
-        }
+    }).catch((error) => {
+        console.log(error.response.data.error)
+        setToastMessage(error.response.data.error);
+        setShowToast(true)
     })
 }
 
 //TO DO: replace with floating labels if have time
 // TO DO: modal-ize
- return(
+ return(<Container className="event-add">
+ <Container className="event-add-form">=
     <Form>
         <Form.Group controlId="inputName">
         <Form.Label>Name:</Form.Label>
@@ -193,5 +204,17 @@ const handleSubmit = (e) => {
       </Row> */}
 
       <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Add Event</Button>
-    </Form>)
+    </Form>
+    </Container>
+    <ToastContainer position="bottom-end">
+    <Toast show={showToast} onClose={toggleShowToast}>
+          <Toast.Header>
+            <strong className="me-auto">In-voi-tations</strong>
+            <small>Events</small>
+          </Toast.Header>
+          <Toast.Body>{toastMessage}</Toast.Body>
+        </Toast>
+    </ToastContainer>
+    </Container>
+    )
 }

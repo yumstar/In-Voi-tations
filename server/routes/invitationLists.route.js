@@ -10,7 +10,7 @@ const invitationListRouter = express.Router();
 invitationListRouter.route("/").get((req, res) => {
     InvitationList.find()
       .then(invitationListList => res.json(invitationListList))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
 invitationListRouter.route("/addInvitationList").post((req, res) => {
@@ -26,19 +26,19 @@ invitationListRouter.route("/addInvitationList").post((req, res) => {
 
     newInvitationList.save()
     .then(() => res.json('New invitation list added to database'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => res.status(400).json({error: err.message}));
 });
 
 invitationListRouter.route('/invitationLists/:id').get((req, res) => {
     InvitationList.findById(req.params.id)
       .then(invitationList => res.json(invitationList))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
   invitationListRouter.route('/invitationLists/:id').delete((req, res) => {
     InvitationList.findByIdAndDelete(req.params.id)
       .then(() => res.json(`Invitation List with id ${req.params.id} deleted`))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
   invitationListRouter.route('/invitationLists/updateInvitationList/:id').post((req, res) => {
@@ -48,9 +48,9 @@ invitationListRouter.route('/invitationLists/:id').get((req, res) => {
         invitationList.list = req.body.list;
         invitationList.save()
           .then(() => res.json(`Invitation List with id ${req.params.id} updated`))
-          .catch(err => res.status(400).json('Error: ' + err));
+          .catch(err => res.status(400).json({error: err.message}));
       })
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
   });
 
 invitationListRouter.route('/invitationLists/:id/inviteByEmail').post((req, res) => {
@@ -83,14 +83,14 @@ invitationListRouter.route('/invitationLists/:id/inviteByEmail').post((req, res)
 
     sgMail.send(msg)
     .then(() => {
-        res.json(emailsSentTo)
+        res.json("Emails sent to friends on list!")
     })
-    .catch((error) => {
-        res.status(400).json("Error:" + error)
+    .catch((err) => {
+        res.status(400).json({error: err.message})
     })
   })
-  .catch((error) => {
-    res.status(400).json("Error:" + error)
+  .catch((err) => {
+    res.status(400).json({error: err.message})
   })
 })
 

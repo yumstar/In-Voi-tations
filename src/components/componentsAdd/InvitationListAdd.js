@@ -4,8 +4,9 @@ import Form from 'react-bootstrap/Form'
 import Button  from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 import BootstrapSelect from 'react-bootstrap-select-dropdown'
-// import EventInfo from "../../../server/models/eventInfo.model";
-// import Contact from "../../../server/models/contact.model";
+import Toast from "react-bootstrap/Toast"
+import Container from "react-bootstrap/Container"
+import ToastContainer  from "react-bootstrap/ToastContainer";
 export default function InvitaionListAdd(){
 
 const [contactOptions, setContactOptions] = useState([]);
@@ -15,6 +16,12 @@ const [contacts, setContacts] = useState([])
 const [events, setEvents] = useState([])
 const [checkedContactDB, setCheckedContactDB] = useState(false);
 const [checkedEventDB, setCheckeEventDB] = useState(false)
+
+const [showToast, setShowToast] = useState(false)
+const [toastMessage, setToastMessage] = useState("");
+
+const toggleShowToast = () => {setShowToast(!showToast)}
+
 const getAllEvents = () => {
   axios({
       method: "GET",
@@ -120,18 +127,23 @@ const handleSubmit = (e) => {
         data: finalInvitationList
     })
     .then((res) => {
-        if(res.data.status === 'fail') {
-            // TO DO:
-        }
-        else if (res.status === 200) {
-          window.location.reload();
-        }
-    })
+      if (res.status >= 200 && res.status < 300) {
+        setToastMessage(res.data);
+        setShowToast(true)
+        setTimeout(() => {window.location.reload();}, 1000)
+        
+      }
+  }).catch((error) => {
+      setToastMessage(error.response.data.error);
+      setShowToast(true)
+  })
 }
 
 //TO DO: replace with floating labels if have time
 // TO DO: modal-ize
- return  (<Form>
+ return  (<Container className="invitation-list-add">
+ <Container className="invitation-list-add-form">
+ <Form>
     <Form.Group controlId="inputEvent">
       <Form.Label>Event:</Form.Label>
       <Form.Select onChange={onChangeEvent} value={null}>
@@ -145,30 +157,19 @@ const handleSubmit = (e) => {
       {/* {getContactsOptions()} */}
     {/* </Form.Select> */}
     </Form.Group>
-    {/* //     <Form.Group controlId="inputfirstName">
-    //     <Form.Label>First Name:</Form.Label>
-    //     <Form.Control type="text" placeholder="First Name" value={contact.firstName} onChange={onChangeFirstName}/>
-    //   </Form.Group>
-    //   <Form.Group controlId="inputLastName">
-    //     <Form.Label>Last Name:</Form.Label>
-    //     <Form.Control type="text" placeholder="Last Name" value={contact.lastName} onChange={onChangeLastName}/>
-    //   </Form.Group>
-    //   <Form.Group controlId="inputPhone">
-    //     <Form.Label>Phone:</Form.Label>
-    //     <Form.Control type="text" placeholder="Phone" value={contact.phone} onChange={onChangePhone}/>
-    //   </Form.Group>
-    //   <Form.Group controlId="inputEmail">
-    //     <Form.Label>E-mail:</Form.Label>
-    //     <Form.Control type="email" placeholder="Email" value={contact.email} onChange={onChangeEmail}/>
-    //   </Form.Group> */}
-       {/* <Form.Text>Birthday</Form.Text>
-    //   <Row>
-    //   <Form.Group controlId="inputBirthdayMonth">
-    //     <Form.Label>Month</Form.Label>
-    //     <Form.Control type="" placeholder="Email" value={contact.email} onChange={onChangeEmail}/>
-    //   </Form.Group>
-    //   </Row> */}
 
     <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Set List</Button>
-     </Form>)
+     </Form>
+     </Container>
+    <ToastContainer position="bottom-end">
+    <Toast show={showToast} onClose={toggleShowToast}>
+          <Toast.Header>
+            <strong className="me-auto">In-voi-tations</strong>
+            <small>Friends</small>
+          </Toast.Header>
+          <Toast.Body>{toastMessage}</Toast.Body>
+          
+        </Toast>
+    </ToastContainer>
+    </Container>)
 }

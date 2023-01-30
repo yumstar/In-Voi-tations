@@ -7,9 +7,16 @@ import axios from "axios";
 import EventInfo from "./Event"
 import InvitationListAdd from "./componentsAdd/InvitationListAdd"
 import InvitationList from "./InvitationList";
+import Toast from "react-bootstrap/Toast"
+import ToastContainer  from "react-bootstrap/ToastContainer";
 export default function InvitationListList() {
     // use 
     const [invitationLists, setInvitationLists] = useState([]);
+
+    const [showToast, setShowToast] = useState(false)
+const [toastMessage, setToastMessage] = useState("");
+
+const toggleShowToast = () => {setShowToast(!showToast)}
 
     const getAllInvitationLists = () => {
         axios({
@@ -22,7 +29,8 @@ export default function InvitationListList() {
                 setInvitationLists(res.data)
             }
             else if(res.data.status === 'fail') {
-                // TO DO:
+                setToastMessage("Invitations lists could not be retrieved");
+                setShowToast(true)
             }
         })
     }
@@ -35,6 +43,15 @@ export default function InvitationListList() {
         .then(res => {
             // Do something
             setInvitationLists(invitationLists.filter(event => event._id !== id))
+            if (res.status >= 200 && res.status < 300) {
+                setToastMessage(res.data);
+                setShowToast(true)
+                setTimeout(() => {window.location.reload();}, 1000)
+              }
+        })
+        .catch((error) => {
+            setToastMessage("Invitation List with id " + id + " could not be deleted");
+            setShowToast(true)
         })
     }
 
@@ -45,22 +62,38 @@ export default function InvitationListList() {
             data: id
         })
         .then(res => {
-            // Do something
+            if (res.status >= 200 && res.status < 300) {
+                setToastMessage(res.data);
+                setShowToast(true)
+              }
         })
-        .catch((error) => {console.log(error)})
+        .catch((error) => {
+            setToastMessage(error.response.data.error);
+            setShowToast(true)
+        })
     }
     useEffect(() => {
         getAllInvitationLists();
     },[])
 
-    return <div className="invitation-lists">
+    return <Container className="invitation-lists">
         {/* <Container className="events-list"> */}
             {invitationLists.map((invitationList) =>{ return <InvitationList info={invitationList} event={invitationList.event} list={invitationList.list} deleteFunction={deleteInvitationLists} inviteFunction={inviteByEmail} canUpdate/>})}
         {/* </Container> */}
-        <div className="add-new-event gap-2">
+        <Container className="add-new-event gap-2">
          <Container>
          <InvitationListAdd></InvitationListAdd>
-            </Container>   
-        </div>
-    </div>
+            </Container>
+            <ToastContainer position="bottom-end">
+    <Toast show={showToast} onClose={toggleShowToast}>
+          <Toast.Header>
+            <strong className="me-auto">In-voi-tations</strong>
+            <small>Send Invitations</small>
+          </Toast.Header>
+          <Toast.Body>{toastMessage}</Toast.Body>
+          
+        </Toast>
+    </ToastContainer>
+        </Container>
+    </Container>
 }

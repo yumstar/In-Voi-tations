@@ -48,8 +48,8 @@ const handleSubmit = (e) => {
     .then((res) => {
         if (res.status >= 200 && res.status < 300) {
           setToastMessage(res.data);
+          setShowToast(true)
           setTimeout(() => {window.location.reload();}, 1000)
-          
         }
     }).catch((error) => {
         console.log(error.response.data.error)
