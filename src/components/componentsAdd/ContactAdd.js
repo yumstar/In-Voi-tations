@@ -3,6 +3,9 @@ import axios from 'axios'
 import Form from 'react-bootstrap/Form'
 import Button  from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
+import Toast from "react-bootstrap/Toast"
+import Container from "react-bootstrap/Container"
+import ToastContainer  from "react-bootstrap/ToastContainer";
 export default function ContactAdd(){
 
 
@@ -14,6 +17,10 @@ const [contact, setContact] = useState({
     email: ''
 })
 
+const [showToast, setShowToast] = useState(false)
+const [toastMessage, setToastMessage] = useState("");
+
+const toggleShowToast = () => {setShowToast(!showToast)}
 const onChangeFirstName = (e) => {
     setContact({...contact, firstName: e.target.value})
 }
@@ -39,18 +46,22 @@ const handleSubmit = (e) => {
         data: contact
     })
     .then((res) => {
-        if(res.data.status === 'fail') {
-            // TO DO:
+        if (res.status >= 200 && res.status < 300) {
+          setToastMessage(res.data);
+          setTimeout(() => {window.location.reload();}, 1000)
+          
         }
-        else if (res.status === 200) {
-          window.location.reload();
-        }
+    }).catch((error) => {
+        console.log(error.response.data.error)
+        setToastMessage(error.response.data.error);
+        setShowToast(true)
     })
 }
 
 //TO DO: replace with floating labels if have time
 // TO DO: modal-ize
- return(
+ return(<Container className="contact-add">
+  <Container className="contact-add-form">
     <Form>
         <Form.Group controlId="inputfirstName">
         <Form.Label>First Name:</Form.Label>
@@ -77,5 +88,18 @@ const handleSubmit = (e) => {
       </Row> */}
 
       <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Add Contact</Button>
-    </Form>)
+    </Form>
+    </Container>
+    <ToastContainer position="bottom-end">
+    <Toast show={showToast} onClose={toggleShowToast}>
+          <Toast.Header>
+            <strong className="me-auto">In-voi-tations</strong>
+            <small>Friends</small>
+          </Toast.Header>
+          <Toast.Body>{toastMessage}</Toast.Body>
+          
+        </Toast>
+    </ToastContainer>
+    </Container>
+    )
 }

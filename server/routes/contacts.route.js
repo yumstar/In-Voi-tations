@@ -35,14 +35,14 @@ contactRouter.route("/addContact").post((req, res) => {
   
       newContact.save()
       .then(() => res.json('Contact added to database'))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error: err.message}));
       }
       else {
         throw new Error("Unable to verify email: " + email)
       }
     })
     .catch(error => {
-      res.status(400).json({errorMsg : error})
+      res.status(400).json("Contact could not be added to database. Ensure that names are provided and phone numbers are at least 7 digits long and emails are deliverable to.")
     })
     // const newContact = new Contact (
     //     {
