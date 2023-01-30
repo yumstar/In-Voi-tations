@@ -57,7 +57,7 @@ eventInfoRouter.route('/eventInfos/:id').get((req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
   });
 
-  eventInfoRouter.route('/eventInfos/update/:id').post((req, res) => {
+  eventInfoRouter.route('/eventInfos/updateEventInfo/:id').post((req, res) => {
     EventInfo.findById(req.params.id)
       .then(eventInfo => {
         eventInfo.name = req.body.name;

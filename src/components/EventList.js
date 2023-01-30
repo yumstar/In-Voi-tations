@@ -41,7 +41,7 @@ export default function EventList() {
 
     return <div className="events">
         <Container className="events-list">
-            {events.map((eventInfo) =>{ return <EventInfo info={eventInfo} deleteFunction={deleteEvent}/>})}
+            {events.map((eventInfo) =>{ return <EventInfo info={eventInfo} deleteFunction={deleteEvent} canUpdate/>})}
         </Container>
         <div className="add-new-event gap-2">
          <Container>

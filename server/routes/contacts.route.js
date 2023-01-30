@@ -71,7 +71,7 @@ contactRouter.route('/contacts/:id').get((req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
   });
 
-  contactRouter.route('/contacts/update/:id').post((req, res) => {
+  contactRouter.route('/contacts/updateContact/:id').post((req, res) => {
     Contact.findById(req.params.id)
       .then(contact => {
         contact.firstName = req.body.firstName;

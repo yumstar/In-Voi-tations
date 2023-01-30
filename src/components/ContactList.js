@@ -39,11 +39,10 @@ export default function ContactList() {
     useEffect(() => {
         getAllContacts();
     },[])
-
     // const ContactsComponents = ;
     return <div className="contacts">
         {/* <Container className="contacts-list"> */}
-            {contacts.map((contactInfo) =>{ return <Contact info={contactInfo} deleteFunction={deleteContact}/>})}
+            {contacts.map((contactInfo) =>{ return <Contact info={contactInfo} deleteFunction={deleteContact} canUpdate/>})}
         {/* </Container> */}
         <div className="add-new-contact gap-2">
          <Container>
