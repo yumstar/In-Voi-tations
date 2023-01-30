@@ -52,7 +52,6 @@ const handleSubmit = (e) => {
           setTimeout(() => {window.location.reload();}, 1000)
         }
     }).catch((error) => {
-        console.log(error.response.data.error)
         setToastMessage(error.response.data.error);
         setShowToast(true)
     })

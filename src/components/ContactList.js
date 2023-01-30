@@ -29,7 +29,7 @@ export default function ContactList() {
                 setContacts(res.data)
             }
             else if(res.data.status === 'fail') {
-                setToastMessage("Invitations lists could not be retrieved");
+                setToastMessage("Contacts could not be retrieved");
                 setShowToast(true)
             }
         })

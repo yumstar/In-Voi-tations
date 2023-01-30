@@ -4,6 +4,10 @@ import Form from 'react-bootstrap/Form'
 import Button  from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 import BootstrapSelect from 'react-bootstrap-select-dropdown'
+import Container  from "react-bootstrap/Container";
+import Toast from "react-bootstrap/Toast"
+import ToastContainer  from "react-bootstrap/ToastContainer";
+
 export default function InvitationListUpdate(props){
 
 const [contactOptions, setContactOptions] = useState([]);
@@ -14,6 +18,12 @@ const [contacts, setContacts] = useState([])
 const [events, setEvents] = useState([])
 const [checkedContactDB, setCheckedContactDB] = useState(false);
 const [checkedEventDB, setCheckeEventDB] = useState(false)
+
+
+const [showToast, setShowToast] = useState(false)
+const [toastMessage, setToastMessage] = useState("");
+
+const toggleShowToast = () => {setShowToast(!showToast)}
 
 const getAllEvents = () => {
   axios({
@@ -28,7 +38,8 @@ const getAllEvents = () => {
   
       }
       else if(res.data.status === 'fail') {
-          // TO DO:
+        setToastMessage("Events could not be retrieved");
+        setShowToast(true)
       }
   })
 }
@@ -45,7 +56,8 @@ const getAllContacts = () => {
           // console.log(contacts)
       }
       else if(res.data.status === 'fail') {
-          // TO DO:
+        setToastMessage("Events could not be retrieved");
+        setShowToast(true)
       }
   })
 }
@@ -139,18 +151,22 @@ const handleSubmit = (e) => {
         data: finalInvitationList
     })
     .then((res) => {
-        if(res.data.status === 'fail') {
-            // TO DO:
-        }
-        else if (res.status === 200) {
-          window.location.reload();
-        }
-    })
+      if (res.status >= 200 && res.status < 300) {
+        setToastMessage(res.data);
+        setShowToast(true)
+        setTimeout(() => {window.location.reload();}, 1000)
+      }
+  }).catch((error) => {
+      setToastMessage(error.response.data.error);
+      setShowToast(true)
+  })
 }
 
 //TO DO: replace with floating labels if have time
 // TO DO: modal-ize
- return  (<Form>
+ return  (
+  <Container className="invitation-list-update">
+  <Container className="invitation-list-update-form"><Form>
     <Form.Group controlId="inputEvent">
       <Form.Label>Event:</Form.Label>
       <Form.Select onChange={onChangeEvent} value={null}>
@@ -166,5 +182,17 @@ const handleSubmit = (e) => {
     </Form.Group>
 
     <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Set List</Button>
-     </Form>)
+     </Form>
+         </Container>
+         <ToastContainer position="bottom-end">
+         <Toast show={showToast} onClose={toggleShowToast}>
+               <Toast.Header>
+                 <strong className="me-auto">In-voi-tations</strong>
+                 <small>Send Invitations</small>
+               </Toast.Header>
+               <Toast.Body>{toastMessage}</Toast.Body>
+               
+             </Toast>
+         </ToastContainer>
+         </Container>)
 }
