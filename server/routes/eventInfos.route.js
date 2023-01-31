@@ -68,7 +68,7 @@ eventInfoRouter.route('/eventInfos/:id').get((req, res) => {
         }
         
         eventInfo.save()
-          .then(() => res.json(`Contact with id ${req.params.id} updated`))
+          .then(() => res.json(`Event with id ${req.params.id} updated`))
           .catch(err => res.status(400).json({error: err.message}));
       })
       .catch(err => res.status(400).json({error: err.message}));

@@ -77,7 +77,7 @@ invitationListRouter.route('/invitationLists/:id/inviteByEmail').post((req, res)
     personalizations: emailPersonalizations,
     from: process.env.SENDGRID_VERIFIED_SENDER, // Change to your verified sender
     subject: process.env.USER + " invites you to " + event.name +  "!",
-    text: `Hey, ${process.env.USER} invites you to ${event.name} on ${dateFormat(event.date, "fullDate")} at ${dateFormat(event.time, "shortTime")}`,
+    text: `Hey, ${process.env.USER} invites you to ${event.name} on ${dateFormat(event.date, "fullDate")} at ${dateFormat(event.time, "shortTime")}!`,
     // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
     }
 
