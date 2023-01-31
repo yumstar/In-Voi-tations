@@ -1,6 +1,5 @@
 import './App.css';
-
-import { Route, Routes} from 'react-router-dom';
+import { Link, Route, Routes} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MainPage from './components/MainPage'
 import InvitationListList from './components/InvitationListList';
@@ -13,7 +12,7 @@ import Container  from 'react-bootstrap/Container';
 function App() {
   return (
     <div className="App">
-      <Navbar bg="warning" variant="light">
+      <Navbar bg="warning" variant="light" style={{fontFamily: 'Montserrat Alternates, sans-serif'}}>
         <Container>
         <Navbar.Brand href="\">In-Voi-tations</Navbar.Brand>
 

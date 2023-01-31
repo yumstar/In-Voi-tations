@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&family=Sen&display=swap');
+
 .App {
   text-align: center;
+  font-family: 'Sen', sans-serif;
 }
+
