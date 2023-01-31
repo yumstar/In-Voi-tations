@@ -67,7 +67,6 @@ const handleSubmit = (e) => {
       <h2 className="h2 mt-3">Add a friend</h2>
       <RiContactsBookLine className="fs-1"/>
         <Form.Group controlId="inputfirstName">
-        {/* <Form.Label>First Name:</Form.Label> */}
         <FloatingLabel controlId="floatingLabelFirstName" label="First Name" className="mt-3 text-muted">
         <Form.Control type="text" placeholder="First Name" value={contact.firstName} onChange={onChangeFirstName}/>
         </FloatingLabel>

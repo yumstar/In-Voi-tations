@@ -1,44 +1,46 @@
 import { useState, useEffect } from "react";
 import axios from 'axios'
 import Form from 'react-bootstrap/Form'
-import Button  from "react-bootstrap/Button";
+import Button from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 import BootstrapSelect from 'react-bootstrap-select-dropdown'
 import Toast from "react-bootstrap/Toast"
 import Container from "react-bootstrap/Container"
-import ToastContainer  from "react-bootstrap/ToastContainer";
+import ToastContainer from "react-bootstrap/ToastContainer";
+import { FloatingLabel } from "react-bootstrap";
+import { BsEnvelopeOpen } from "react-icons/bs";
 export default function InvitaionListAdd(){
 
-const [contactOptions, setContactOptions] = useState([]);
-const [contactList, setContactList] = useState([])
-const [eventInfo, setEventInfo] = useState({name: "sss"})
-const [contacts, setContacts] = useState([])
-const [events, setEvents] = useState([])
-const [checkedContactDB, setCheckedContactDB] = useState(false);
-const [checkedEventDB, setCheckeEventDB] = useState(false)
+  const [contactOptions, setContactOptions] = useState([]);
+  const [contactList, setContactList] = useState([])
+  const [eventInfo, setEventInfo] = useState({ name: "sss" })
+  const [contacts, setContacts] = useState([])
+  const [events, setEvents] = useState([])
+  const [checkedContactDB, setCheckedContactDB] = useState(false);
+  const [checkedEventDB, setCheckeEventDB] = useState(false)
 
-const [showToast, setShowToast] = useState(false)
-const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState("");
 
-const toggleShowToast = () => {setShowToast(!showToast)}
+  const toggleShowToast = () => { setShowToast(!showToast) }
 
-const getAllEvents = () => {
-  axios({
+  const getAllEvents = () => {
+    axios({
       method: "GET",
       url: "http://localhost:5000/eventInfo/"
-  })
-  .then((res) => {
-      if(res.status === 200){
+    })
+      .then((res) => {
+        if (res.status === 200) {
           // console.log(res.data)
           setEvents(res.data)
           // console.log(events)
-  
-      }
-      else if(res.data.status === 'fail') {
+
+        }
+        else if (res.data.status === 'fail') {
           // TO DO:
-      }
-  })
-}
+        }
+      })
+  }
 
 const getAllContacts = () => {
   axios({
@@ -144,31 +146,31 @@ const handleSubmit = (e) => {
  return  (<Container className="invitation-list-add">
  <Container className="invitation-list-add-form">
  <Form>
+  <h2 className="h2 mt-3">Create a new list of invitations:</h2>
+  <BsEnvelopeOpen className="fs-1 mt-2"/>
     <Form.Group controlId="inputEvent">
-      <Form.Label>Event:</Form.Label>
+    <FloatingLabel controlId="floatingLabelEvent" label="Event" className="mt-4 text-muted">
       <Form.Select onChange={onChangeEvent} value={null}>
       {getEventsOptions()}
     </Form.Select>
+    </FloatingLabel>
     </Form.Group>
     <Form.Group controlId="inputContacts">
-      <Form.Label>Contacts: </Form.Label>
-      {/* <Form.Select value={contactList} onChange={onChangeContactList}> */}
+      <Form.Label className="d-block mt-3">Contacts: </Form.Label>
       <BootstrapSelect options={contactOptions} onChange={onChangeContactList} isMultiSelect/>
-      {/* {getContactsOptions()} */}
-    {/* </Form.Select> */}
-    <Form.Text className="text-muted">
+    <Form.Text className="text-muted d-block">
           (Optional)
         </Form.Text>
     </Form.Group>
 
-    <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Set List</Button>
+    <Button type="submit" onClick={handleSubmit} className="m-3 mt-4"variant="success" size="lg">Set List</Button>
      </Form>
      </Container>
     <ToastContainer position="bottom-end">
     <Toast show={showToast} onClose={toggleShowToast}>
           <Toast.Header>
             <strong className="me-auto">In-voi-tations</strong>
-            <small>Friends</small>
+            <small>Send Invitations</small>
           </Toast.Header>
           <Toast.Body>{toastMessage}</Toast.Body>
           

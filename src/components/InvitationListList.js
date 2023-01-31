@@ -77,9 +77,10 @@ const toggleShowToast = () => {setShowToast(!showToast)}
     },[])
 
     return <Container className="invitation-lists">
-        {/* <Container className="events-list"> */}
-            {invitationLists.map((invitationList) =>{ return <InvitationList info={invitationList} event={invitationList.event} list={invitationList.list} deleteFunction={deleteInvitationLists} inviteFunction={inviteByEmail} canUpdate/>})}
-        {/* </Container> */}
+        <h1 className="mt-3 mb-4">Invitation Lists</h1>
+        <Container className="invitation-list-list">
+            {invitationLists.map((invitationList, i) =>{ return <InvitationList id={invitationList._id}info={invitationList} event={invitationList.event} list={invitationList.list} deleteFunction={deleteInvitationLists} inviteFunction={inviteByEmail} childIndex={i} key={i} canUpdate/>})}
+        </Container>
         <Container className="add-new-event gap-2">
          <Container>
          <InvitationListAdd></InvitationListAdd>

@@ -7,6 +7,8 @@ import BootstrapSelect from 'react-bootstrap-select-dropdown'
 import Container  from "react-bootstrap/Container";
 import Toast from "react-bootstrap/Toast"
 import ToastContainer  from "react-bootstrap/ToastContainer";
+import { BsEnvelopeOpen } from "react-icons/bs";
+import { FloatingLabel } from "react-bootstrap";
 
 export default function InvitationListUpdate(props){
 
@@ -166,25 +168,25 @@ const handleSubmit = (e) => {
 // TO DO: modal-ize
  return  (
   <Container className="invitation-list-update">
-  <Container className="invitation-list-update-form"><Form>
+  <Container className="invitation-list-update-form">
+    <Form>
+    <BsEnvelopeOpen className="fs-1 mt-2 d-block mx-auto"/>
     <Form.Group controlId="inputEvent">
-      <Form.Label>Event:</Form.Label>
+    <FloatingLabel controlId="floatingLabelEvent" label="Event" className="mt-4 text-muted">
       <Form.Select onChange={onChangeEvent} value={null}>
       {getEventsOptions()}
     </Form.Select>
+    </FloatingLabel>
     </Form.Group>
     <Form.Group controlId="inputContacts">
-      <Form.Label>Contacts: </Form.Label>
-      {/* <Form.Select value={contactList} onChange={onChangeContactList}> */}
-      <BootstrapSelect options={contactOptions} defaultOptions={defaultContactOptions} onChange={onChangeContactList} isMultiSelect/>
-      <Form.Text className="text-muted">
+    <Form.Label className="d-block mt-3">Contacts: </Form.Label>
+      <BootstrapSelect className="m-auto" options={contactOptions} defaultOptions={defaultContactOptions} onChange={onChangeContactList} isMultiSelect/>
+      <Form.Text className="text-muted d-block">
           (Optional)
         </Form.Text>
-      {/* {getContactsOptions()} */}
-    {/* </Form.Select> */}
     </Form.Group>
 
-    <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Set List</Button>
+    <Button type="submit" onClick={handleSubmit} className="my-3 "variant="success" size="lg">Set List</Button>
      </Form>
          </Container>
          <ToastContainer position="bottom-end">
