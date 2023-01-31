@@ -20,9 +20,8 @@ const handleShow = () => setShow(true);
     return ( <Container className="contact">
     <Container className="border rounded">
             <Row xs="1">
-            {props.childIndex % 2 == 0? <RiContactsLine className="mt-3"/ > : <RiContactsFill className="mt-3"/>}
+            {props.childIndex % 2 == 0? <RiContactsLine className="mt-3 fs-3"/ > : <RiContactsFill className="mt-3 fs-3"/>}
             <span className="h3 text-center">{"Name: " + props.info.firstName + " " + props.info.lastName}</span>
-           
             </Row>
             <Row xs="2">
             <span className="h3 my-2">{"Phone: " + props.info.phone}</span>

@@ -56,8 +56,9 @@ const toggleShowToast = () => {setShowToast(!showToast)}
     },[])
 
     return <Container className="events">
+        <h1 className="mt-3 mb-4">Events</h1>
         <Container className="events-list">
-            {events.map((eventInfo) =>{ return <EventInfo info={eventInfo} deleteFunction={deleteEvent} canUpdate/>})}
+            {events.map((eventInfo, i) =>{ return <EventInfo info={eventInfo} deleteFunction={deleteEvent} childIndex={i} key={i} canUpdate/>})}
         </Container>
         <Container className="add-new-event gap-2">
          <Container>

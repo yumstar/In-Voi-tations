@@ -3,11 +3,14 @@ import axios from 'axios'
 import Form from 'react-bootstrap/Form'
 import Button  from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import dateFormat from "dateformat";
 import { useEffect } from "react";
 import Toast from "react-bootstrap/Toast"
 import Container from "react-bootstrap/Container"
 import ToastContainer  from "react-bootstrap/ToastContainer";
+import { FloatingLabel } from "react-bootstrap";
+import { MdOutlineEventNote } from "react-icons/md";
 export default function EventAdd(){
 
 const PERIODS = [
@@ -44,7 +47,6 @@ const getYearsOptions = () => {
     const years = []
     const currentYear = new Date();
     years[0] = currentYear.getFullYear();
-    // years[0] = eventInfo.year
     for(var i = 1; i < 10; i++) {years[i] = years[0] + i;}
     return years.map(year => {return <option value={year}>{year}</option>})
 }
@@ -156,56 +158,73 @@ const handleSubmit = (e) => {
  return(<Container className="event-add">
  <Container className="event-add-form">
     <Form>
+        <h2 className="h2 mt-3">Add a Event</h2>
+        <MdOutlineEventNote className="fs-1"/>
         <Form.Group controlId="inputName">
-        <Form.Label>Name:</Form.Label>
+        <FloatingLabel controlId="floatingLabelName" label="Name" className="mt-3 text-muted">
         <Form.Control type="text" placeholder="Name" value={eventInfo.name} onChange={onChangeName}/>
+        </FloatingLabel>
       </Form.Group>
       <Form.Group controlId="inputLocation">
-        <Form.Label>Location:</Form.Label>
+      <FloatingLabel controlId="floatingLabelLocation" label="Location" className="mt-3 text-muted">
         <Form.Control type="text" placeholder="Location" value={eventInfo.location} onChange={onChangeLocation}/>
+        </FloatingLabel>
         <Form.Text className="text-muted">
           (Optional)
         </Form.Text>
       </Form.Group>
       <Form.Group controlId="inputDate">
-      <Form.Label>Year:</Form.Label>
+      <Row>
+      <Form.Label className="text-reset">Date:</Form.Label>
+    <Col>
+      <FloatingLabel controlId="floatingLabelYear" label="Year" className="mt-3 text-muted">
       <Form.Select value={eventInfo.year} onChange={onChangeDateYear}>
       {getYearsOptions()}
     </Form.Select>
-    <Form.Label>Month:</Form.Label>
+    </FloatingLabel>
+    </Col>
+    <Col>
+    <FloatingLabel controlId="floatingLabelMonth" label="Month" className="mt-3 text-muted">
     <Form.Select value={eventInfo.month} onChange={onChangeDateMonth}>
       {getMonthsOptions()}
     </Form.Select>
-    <Form.Label>Day:</Form.Label>
+    </FloatingLabel>
+    </Col>
+    <Col>
+    <FloatingLabel controlId="floatingLabelDay" label="Day" className="mt-3 text-muted">
     <Form.Select value={eventInfo.day} onChange={onChangeDateDate}>
       {getDatesOptions()}
     </Form.Select>
+    </FloatingLabel>
+    </Col>
+    </Row>
       </Form.Group>
-      {/* <Form.Group controlId="inputDate">
-        <Form.Label>Date:</Form.Label>
-        <Form.Control type="text" placeholder="Date" value={eventInfo.date} onChange={onChangeDate}/>
-      </Form.Group> */}
       <Form.Group controlId="inputTime">
-        <Form.Label>Time:</Form.Label>
+      <Form.Label className="text-reset">Time:</Form.Label>
+      <Row>
+      <Col>
+      <FloatingLabel controlId="floatingLabelHour" label="Hour" className="mt-3 text-muted">
         <Form.Select value={eventInfo.hour} onChange={onChangeTimeHour}>
             {getHourOptions()}
         </Form.Select>
-        <Form.Label>:</Form.Label>
+        </FloatingLabel>
+        </Col>
+        <Col>
+        <FloatingLabel controlId="floatingLabelMinute" label="Minute" className="mt-3 text-muted">
         <Form.Select value={eventInfo.minute} onChange={onChangeTimeMinute}>
             {getMinutesOptions()}
         </Form.Select>
+        </FloatingLabel>
+        </Col>
+        <Col>
+        <FloatingLabel controlId="floatingLabelPeriod" label="Period" className="mt-3 text-muted">
         <Form.Select value={eventInfo.period.value} onChange={onChangeTimePeriod}>
             {getPeriodOptions()}
         </Form.Select>
-        {/* <Form.Control type="text" placeholder="Time" value={eventInfo.time} onChange={onChangeTime}/> */}
+        </FloatingLabel>
+        </Col>
+      </Row>
       </Form.Group>
-      {/* <Form.Text>Birthday</Form.Text>
-      <Row>
-      <Form.Group controlId="inputBirthdayMonth">
-        <Form.Label>Month</Form.Label>
-        <Form.Control type="" placeholder="Email" value={eventInfo.email} onChange={onChangeEmail}/>
-      </Form.Group>
-      </Row> */}
 
       <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Add Event</Button>
     </Form>

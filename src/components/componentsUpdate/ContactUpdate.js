@@ -6,6 +6,8 @@ import { useState } from 'react';
 import Container  from "react-bootstrap/Container";
 import Toast from "react-bootstrap/Toast"
 import ToastContainer  from "react-bootstrap/ToastContainer";
+import { FloatingLabel } from "react-bootstrap";
+import { RiContactsBookLine } from "react-icons/ri";
 export default function ContactUpdate(props){
 
 
@@ -64,37 +66,34 @@ const handleSubmit = (e) => {
   <Container className="contact-update">
   <Container className="contact-update-form">
     <Form>
+    <RiContactsBookLine className="fs-1 d-block m-auto"/>
         <Form.Group controlId="inputfirstName">
-        <Form.Label>First Name:</Form.Label>
+        <FloatingLabel controlId="floatingLabelFirstName" label="First Name" className="mt-3 text-muted">
         <Form.Control type="text" placeholder="First Name" value={contact.firstName} onChange={onChangeFirstName}/>
+        </FloatingLabel>
       </Form.Group>
       <Form.Group controlId="inputLastName">
-        <Form.Label>Last Name:</Form.Label>
+      <FloatingLabel controlId="floatingLabelLastName" label="Last Name" className="mt-3 text-muted">
         <Form.Control type="text" placeholder="Last Name" value={contact.lastName} onChange={onChangeLastName}/>
+        </FloatingLabel>
       </Form.Group>
       <Form.Group controlId="inputPhone">
-        <Form.Label>Phone:</Form.Label>
+      <FloatingLabel controlId="floatingLabelPhone" label="Phone" className="mt-3 text-muted">
         <Form.Control type="text" placeholder="Phone" value={contact.phone} onChange={onChangePhone}/>
+        </FloatingLabel>
         <Form.Text className="text-muted">
           (Optional)
         </Form.Text>
       </Form.Group>
       <Form.Group controlId="inputEmail">
-        <Form.Label>E-mail:</Form.Label>
+      <FloatingLabel controlId="floatingLabelEmail" label="Email" className="mt-3 text-muted">
         <Form.Control type="email" placeholder="Email" value={contact.email} onChange={onChangeEmail}/>
+        </FloatingLabel>
         <Form.Text className="text-muted">
           (Optional)
         </Form.Text>
       </Form.Group>
-      {/* <Form.Text>Birthday</Form.Text>
-      <Row>
-      <Form.Group controlId="inputBirthdayMonth">
-        <Form.Label>Month</Form.Label>
-        <Form.Control type="" placeholder="Email" value={contact.email} onChange={onChangeEmail}/>
-      </Form.Group>
-      </Row> */}
-
-      <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Update Contact</Button>
+      <Button type="submit" onClick={handleSubmit} className="my-3"variant="success" size="lg">Update Contact</Button>
     </Form>
     </Container>
     <ToastContainer position="bottom-end">

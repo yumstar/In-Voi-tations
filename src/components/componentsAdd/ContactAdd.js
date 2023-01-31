@@ -6,6 +6,8 @@ import Row from 'react-bootstrap/Row';
 import Toast from "react-bootstrap/Toast"
 import Container from "react-bootstrap/Container"
 import ToastContainer  from "react-bootstrap/ToastContainer";
+import { FloatingLabel } from "react-bootstrap";
+import { RiContactsBookLine } from "react-icons/ri";
 export default function ContactAdd(){
 
 
@@ -62,24 +64,31 @@ const handleSubmit = (e) => {
  return(<Container className="contact-add">
   <Container className="contact-add-form">
     <Form>
+      <h2 className="h2 mt-3">Add a friend</h2>
+      <RiContactsBookLine className="fs-1"/>
         <Form.Group controlId="inputfirstName">
-        <Form.Label>First Name:</Form.Label>
+        {/* <Form.Label>First Name:</Form.Label> */}
+        <FloatingLabel controlId="floatingLabelFirstName" label="First Name" className="mt-3 text-muted">
         <Form.Control type="text" placeholder="First Name" value={contact.firstName} onChange={onChangeFirstName}/>
+        </FloatingLabel>
       </Form.Group>
       <Form.Group controlId="inputLastName">
-        <Form.Label>Last Name:</Form.Label>
+        <FloatingLabel controlId="floatingLabelLastName" label="Last Name" className="mt-3 text-muted">
         <Form.Control type="text" placeholder="Last Name" value={contact.lastName} onChange={onChangeLastName}/>
+        </FloatingLabel>
       </Form.Group>
       <Form.Group controlId="inputPhone">
-        <Form.Label>Phone:</Form.Label>
+        <FloatingLabel controlId="floatingLabelPhone" label="Phone" className="mt-3 text-muted">
         <Form.Control type="text" placeholder="Phone" value={contact.phone} onChange={onChangePhone}/>
+        </FloatingLabel>
         <Form.Text className="text-muted">
           (Optional)
         </Form.Text>
       </Form.Group>
       <Form.Group controlId="inputEmail">
-        <Form.Label>E-mail:</Form.Label>
+        <FloatingLabel controlId="floatingLabelEmail" label="Email" className="mt-3 text-muted">
         <Form.Control type="email" placeholder="Email" value={contact.email} onChange={onChangeEmail}/>
+        </FloatingLabel>
         <Form.Text className="text-muted">
           (Optional)
         </Form.Text>
