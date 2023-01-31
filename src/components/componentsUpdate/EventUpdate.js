@@ -161,6 +161,9 @@ const handleSubmit = (e) => {
       <Form.Group controlId="inputLocation">
         <Form.Label>Location:</Form.Label>
         <Form.Control type="text" placeholder="Location" value={eventInfo.location} onChange={onChangeLocation}/>
+        <Form.Text className="text-muted">
+          (Optional)
+        </Form.Text>
       </Form.Group>
       <Form.Group controlId="inputDate">
       <Form.Label>Year:</Form.Label>

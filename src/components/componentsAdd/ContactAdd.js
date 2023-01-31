@@ -73,10 +73,16 @@ const handleSubmit = (e) => {
       <Form.Group controlId="inputPhone">
         <Form.Label>Phone:</Form.Label>
         <Form.Control type="text" placeholder="Phone" value={contact.phone} onChange={onChangePhone}/>
+        <Form.Text className="text-muted">
+          (Optional)
+        </Form.Text>
       </Form.Group>
       <Form.Group controlId="inputEmail">
         <Form.Label>E-mail:</Form.Label>
         <Form.Control type="email" placeholder="Email" value={contact.email} onChange={onChangeEmail}/>
+        <Form.Text className="text-muted">
+          (Optional)
+        </Form.Text>
       </Form.Group>
       {/* <Form.Text>Birthday</Form.Text>
       <Row>

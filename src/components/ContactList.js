@@ -60,7 +60,7 @@ export default function ContactList() {
     // const ContactsComponents = ;
     return <Container className="contacts">
         {/* <Container className="contacts-list"> */}
-            {contacts.map((contactInfo) =>{ return <Contact info={contactInfo} deleteFunction={deleteContact} canUpdate/>})}
+            {contacts.map((contactInfo, i) =>{ return <Contact info={contactInfo} deleteFunction={deleteContact} childIndex={i} canUpdate/>})}
         {/* </Container> */}
         <Container className="add-new-contact gap-2">
          <Container>

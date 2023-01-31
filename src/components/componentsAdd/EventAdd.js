@@ -115,7 +115,7 @@ const onChangeDateDate = (e) => {
 }
 
 const onChangeTimeHour = (e) => {
-    setEvent({...eventInfo, hour: parseInt(e.target.value) + eventInfo.period.value});
+    setEvent({...eventInfo, hour: (parseInt(e.target.value))});
     console.log(eventInfo)
 }
 const onChangeTimeMinute = (e) => {
@@ -123,6 +123,7 @@ const onChangeTimeMinute = (e) => {
     console.log(eventInfo)
 }
 const onChangeTimePeriod = (e) => {
+    console.log(e.target.value)
     const matchingPeriods = PERIODS.filter(period => period.value == e.target.value)
     const matchingPeriod = matchingPeriods[0]
     setEvent({...eventInfo, period: matchingPeriod})
@@ -130,7 +131,7 @@ const onChangeTimePeriod = (e) => {
 
 const handleSubmit = (e) => {
     e.preventDefault()
-    const eventInfoDated = {...eventInfo, date: new Date(eventInfo.year, eventInfo.month, eventInfo.day), time: new Date(eventInfo.year, eventInfo.month, eventInfo.day, eventInfo.hour, eventInfo.minute)};
+    const eventInfoDated = {...eventInfo, date: new Date(eventInfo.year, eventInfo.month, eventInfo.day), time: new Date(eventInfo.year, eventInfo.month, eventInfo.day, (eventInfo.hour + eventInfo.period.value), eventInfo.minute)};
     axios({
         method: "POST",
         url: "http://localhost:5000/eventInfo/addEventInfo",
@@ -153,7 +154,7 @@ const handleSubmit = (e) => {
 //TO DO: replace with floating labels if have time
 // TO DO: modal-ize
  return(<Container className="event-add">
- <Container className="event-add-form">=
+ <Container className="event-add-form">
     <Form>
         <Form.Group controlId="inputName">
         <Form.Label>Name:</Form.Label>
@@ -162,6 +163,9 @@ const handleSubmit = (e) => {
       <Form.Group controlId="inputLocation">
         <Form.Label>Location:</Form.Label>
         <Form.Control type="text" placeholder="Location" value={eventInfo.location} onChange={onChangeLocation}/>
+        <Form.Text className="text-muted">
+          (Optional)
+        </Form.Text>
       </Form.Group>
       <Form.Group controlId="inputDate">
       <Form.Label>Year:</Form.Label>

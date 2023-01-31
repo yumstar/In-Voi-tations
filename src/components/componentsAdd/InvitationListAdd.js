@@ -156,6 +156,9 @@ const handleSubmit = (e) => {
       <BootstrapSelect options={contactOptions} onChange={onChangeContactList} isMultiSelect/>
       {/* {getContactsOptions()} */}
     {/* </Form.Select> */}
+    <Form.Text className="text-muted">
+          (Optional)
+        </Form.Text>
     </Form.Group>
 
     <Button type="submit" onClick={handleSubmit} className="m-3"variant="success" size="lg">Set List</Button>

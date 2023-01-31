@@ -177,6 +177,9 @@ const handleSubmit = (e) => {
       <Form.Label>Contacts: </Form.Label>
       {/* <Form.Select value={contactList} onChange={onChangeContactList}> */}
       <BootstrapSelect options={contactOptions} defaultOptions={defaultContactOptions} onChange={onChangeContactList} isMultiSelect/>
+      <Form.Text className="text-muted">
+          (Optional)
+        </Form.Text>
       {/* {getContactsOptions()} */}
     {/* </Form.Select> */}
     </Form.Group>

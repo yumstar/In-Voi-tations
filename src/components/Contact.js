@@ -1,9 +1,12 @@
 import Container  from "react-bootstrap/Container"
 import  Row  from "react-bootstrap/Row"
+import  Col  from "react-bootstrap/Col"
 import  Button  from "react-bootstrap/Button"
 import  Modal  from "react-bootstrap/Modal"
 import axios from "axios"
 import ContactUpdate from "./componentsUpdate/ContactUpdate"
+import { RiContactsFill } from "react-icons/ri";
+import { RiContactsLine } from "react-icons/ri";
 import { useState } from "react"
 
 
@@ -17,14 +20,16 @@ const handleShow = () => setShow(true);
     return ( <Container className="contact">
     <Container className="border rounded">
             <Row xs="1">
-            <span className="h3 float-left p-1">{"Name: " + props.info.firstName + " " + props.info.lastName}</span>
+            {props.childIndex % 2 == 0? <RiContactsLine className="mt-3"/ > : <RiContactsFill className="mt-3"/>}
+            <span className="h3 text-center">{"Name: " + props.info.firstName + " " + props.info.lastName}</span>
+           
             </Row>
             <Row xs="2">
-            <span className="h3 float-left">{"Phone: " + props.info.phone}</span>
-            <span className="h3 float-right">{props.info.email && "E-mail: " + props.info.email}</span>
+            <span className="h3 my-2">{"Phone: " + props.info.phone}</span>
+            <span className="h3 my-2">{props.info.email && "E-mail: " + props.info.email}</span>
             </Row>
-           {props.deleteFunction && <Button variant="danger" onClick={() => {props.deleteFunction(props.info._id)}}>Delete Contact</Button>}
-           {props.canUpdate && <Button variant="warning" onClick={handleShow}>Update Contact</Button>}
+           {props.deleteFunction && <Button className="my-3 mx-4 p-2" variant="danger" onClick={() => {props.deleteFunction(props.info._id)}}>Delete Contact</Button>}
+           {props.canUpdate && <Button className="my-3 mx-4 p-2" variant="warning" onClick={handleShow}>Update Contact</Button>}
     </Container>
       <Container>
       <Modal show={show} onHide={handleClose}>
