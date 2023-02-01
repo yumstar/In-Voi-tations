@@ -72,6 +72,24 @@ const toggleShowToast = () => {setShowToast(!showToast)}
             setShowToast(true)
         })
     }
+
+    const inviteBySMS = (id) => {
+        axios({
+            method: "POST",
+            url: "http://localhost:5000/invitationList/invitationLists/" + id + "/inviteBySMS",
+            data: id
+        })
+        .then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                setToastMessage(res.data);
+                setShowToast(true)
+              }
+        })
+        .catch((error) => {
+            setToastMessage(error.response.data.error);
+            setShowToast(true)
+        })
+    }
     useEffect(() => {
         getAllInvitationLists();
     },[])
@@ -79,7 +97,7 @@ const toggleShowToast = () => {setShowToast(!showToast)}
     return <Container className="invitation-lists">
         <h1 className="mt-3 mb-4">Invitation Lists</h1>
         <Container className="invitation-list-list">
-            {invitationLists.map((invitationList, i) =>{ return <InvitationList id={invitationList._id}info={invitationList} event={invitationList.event} list={invitationList.list} deleteFunction={deleteInvitationLists} inviteFunction={inviteByEmail} childIndex={i} key={i} canUpdate/>})}
+            {invitationLists.map((invitationList, i) =>{ return <InvitationList id={invitationList._id}info={invitationList} event={invitationList.event} list={invitationList.list} deleteFunction={deleteInvitationLists} inviteFunctions={[{func: inviteByEmail, method: "Email"}, {func:inviteBySMS, method: "SMS"} ]} childIndex={i} key={i} canUpdate/>})}
         </Container>
         <Container className="add-new-event gap-2">
          <Container>

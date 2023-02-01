@@ -3,6 +3,8 @@ import dateFormat from "dateformat";
 import sgMail from "@sendgrid/mail"
 import InvitationList from "../models/invitationList.model.js";
 import dotenv from "dotenv"
+import twilio from "twilio";
+
 dotenv.config()
 
 const invitationListRouter = express.Router();
@@ -94,4 +96,40 @@ invitationListRouter.route('/invitationLists/:id/inviteByEmail').post((req, res)
   })
 })
 
+invitationListRouter.route('/invitationLists/:id/inviteBySMS').post((req, res) => {
+  InvitationList.findById(req.params.id)
+  .then(invitationList => {
+    const event = invitationList.event;
+    const list = invitationList.list;
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const client = new twilio(accountSid, authToken);
+    var numbers = []
+    var numbersMsged = []
+    var numbersNotMsged = []
+    list.forEach((contact) => {
+      numbers.push({name: contact.firstName + " " + contact.lastName, phone: contact.phone})
+    })
+    numbers.forEach((contact) => {
+      client.messages.create({
+        body: `Hey, ${process.env.USER} invites you to ${event.name} on ${dateFormat(event.date, "fullDate")} at ${dateFormat(event.time, "shortTime")}!`,
+        from: process.env.TWILIO_NUMBER,
+        to: contact.phone
+      })
+      .then((message) => {
+          numbersMsged.push(contact)
+      })
+      .catch((err) => {
+        numbersNotMsged.push({number: contact, error: err.message})
+      })
+      .done()
+    })
+
+    res.json("SMS messages sent to friends on list!")
+  })
+  .catch((err) => {
+    res.status(400).json({error: err.message})
+  }
+  )
+})
   export default invitationListRouter

@@ -25,6 +25,9 @@ export default function InvitationList(props) {
         {props.deleteFunction && <Button className="my-3 mx-4 p-2" variant="danger" onClick={() => {props.deleteFunction(props.info._id)}}>Delete List</Button>}
         {props.canUpdate && <Button className="my-4 mx-4 p-2" variant="warning" onClick={handleShow}>Update List</Button>}
         {props.inviteFunction && <Button className="my-4 mx-4 p-2" variant="success" onClick={() => {props.inviteFunction(props.info._id)}}>Invite By Email</Button>}
+        {
+          props.inviteFunctions && props.inviteFunctions.map(inviteFunc => {return <Button className="my-4 mx-4 p-2" variant="primary" onClick={() => {inviteFunc.func(props.info._id)}}>Invite By {inviteFunc.method}</Button> })
+        }
         <p className="h3 mt-2">Friends:</p>
         {props.list.map((contact, i) => {return <Contact info={contact} childIndex={i}/>})}
         </Container>
